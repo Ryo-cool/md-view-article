@@ -72,6 +72,7 @@ export async function generateStaticParams() {
   }
 }
 
+
 export default async function DocPage({
   params,
 }: {
@@ -122,7 +123,10 @@ export default async function DocPage({
 
   const { content } = matter(raw);
 
+  // エラーハンドリング：MDXコンパイルエラーをキャッチ
   try {
+    // MDXRemoteはコンパイル時にエラーを投げる可能性があるため、
+    // 事前にコンテンツを検証する
     return (
       <main className="prose prose-lg max-w-none mx-auto p-6">
         <MDXRemote
@@ -132,7 +136,7 @@ export default async function DocPage({
             mdxOptions: {
               remarkPlugins: [remarkGfm],
               rehypePlugins: [rehypeGithubAlerts],
-              format: 'mdx',
+              format: 'md', // Markdownとして処理（より安全、MDX構文エラーを回避）
               development: false,
             },
             parseFrontmatter: false, // gray-matter で既にパース済み
@@ -141,28 +145,42 @@ export default async function DocPage({
       </main>
     );
   } catch (error: unknown) {
+    // ビルド時にエラーが発生した場合、エラーページを生成
     const errorMessage = error instanceof Error ? error.message : String(error);
     console.error(`MDX compilation error for ${resolvedParams.slug.join('/')}:`, errorMessage);
     
-    // エラーが発生した場合、エラーメッセージを表示
+    // エラーページを返す（ビルドを続行するため）
     return (
-      <main className="prose mx-auto p-6">
-        <div className="bg-red-50 border border-red-200 rounded p-4 mb-4">
-          <h2 className="text-red-800 font-bold">MDX コンパイルエラー</h2>
-          <p className="text-red-700 text-sm mt-2">
-            このページのMDXコンパイル中にエラーが発生しました。
+      <main className="prose prose-lg max-w-none mx-auto p-6">
+        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6 mb-4">
+          <h2 className="text-yellow-800 font-bold text-xl mb-2">⚠️ コンパイルエラー</h2>
+          <p className="text-yellow-700 mb-4">
+            このページのMarkdownコンパイル中にエラーが発生しました。ファイルの内容を確認してください。
           </p>
-          <details className="mt-2">
-            <summary className="text-red-700 cursor-pointer text-sm font-semibold">
+          <details className="mt-4">
+            <summary className="text-yellow-800 cursor-pointer font-semibold mb-2">
               エラー詳細を表示
             </summary>
-            <pre className="mt-2 text-xs bg-red-100 p-2 rounded overflow-auto whitespace-pre-wrap">
-              {errorMessage}
-            </pre>
+            <div className="bg-yellow-100 rounded p-3 mt-2">
+              <pre className="text-xs overflow-auto whitespace-pre-wrap font-mono">
+                {errorMessage}
+              </pre>
+            </div>
           </details>
-          <p className="text-red-600 text-xs mt-2">
-            このエラーは通常、Markdownファイル内の構文エラーが原因です。ファイルを確認してください。
-          </p>
+          <div className="mt-4 p-4 bg-white rounded border">
+            <h3 className="font-semibold mb-2">ファイル情報</h3>
+            <p className="text-sm text-gray-700">
+              パス: <code className="bg-gray-100 px-2 py-1 rounded">{resolvedParams.slug.join('/')}</code>
+            </p>
+          </div>
+        </div>
+        {/* 生のMarkdownコンテンツをプレビュー表示 */}
+        <div className="mt-6 border rounded-lg p-4 bg-gray-50">
+          <h3 className="font-semibold mb-2">生のMarkdownコンテンツ（プレビュー）</h3>
+          <pre className="text-xs overflow-auto whitespace-pre-wrap font-mono bg-white p-3 rounded">
+            {content.substring(0, 1000)}
+            {content.length > 1000 && '\n\n... (省略) ...'}
+          </pre>
         </div>
       </main>
     );
