@@ -40,16 +40,39 @@ interface GitHubContent {
 
 async function getHeadSha(): Promise<string> {
   try {
-      // まずリポジトリの存在確認を試みる（より詳細なエラー情報を得るため）
-      try {
-        await ofetch(
-          `https://api.github.com/repos/${OWNER}/${REPO}`,
-          {
-            headers: { Authorization: `Bearer ${TOKEN}` },
-          }
+    // まずトークンが有効かを確認
+    try {
+      await ofetch('https://api.github.com/user', {
+        headers: { Authorization: `Bearer ${TOKEN}` },
+      });
+      // トークンは有効（認証できている）
+    } catch (authError: unknown) {
+      const authErr = authError as { status?: number; message?: string };
+      if (authErr?.status === 401) {
+        throw new Error(
+          `認証に失敗しました。GITHUB_TOKEN が無効です。\n` +
+          `トークンを再発行してください: https://github.com/settings/tokens`
         );
-        
-        // リポジトリが存在する場合、ブランチ情報を取得
+      }
+      if (authErr?.status === 403) {
+        throw new Error(
+          `アクセスが拒否されました。\n` +
+          `- レート制限に達している可能性があります\n` +
+          `- SSO 必須の組織では、トークンに SSO Grant が付与されているか確認してください`
+        );
+      }
+    }
+
+    // リポジトリの存在確認を試みる
+    try {
+      await ofetch<{ private?: boolean; full_name?: string }>(
+        `https://api.github.com/repos/${OWNER}/${REPO}`,
+        {
+          headers: { Authorization: `Bearer ${TOKEN}` },
+        }
+      );
+      
+      // リポジトリが存在する場合、ブランチ情報を取得
       const ref = await ofetch<GitHubRef>(
         `https://api.github.com/repos/${OWNER}/${REPO}/git/refs/heads/${BRANCH}`,
         {
@@ -62,13 +85,41 @@ async function getHeadSha(): Promise<string> {
       
       // リポジトリ情報取得時のエラー
       if (repoErr?.status === 404) {
+        // 404の場合、Privateリポジトリで権限がない可能性が高い
+        // Publicリポジトリかどうかを確認してみる（認証なし）
+        try {
+          await ofetch(`https://api.github.com/repos/${OWNER}/${REPO}`, {
+            // 認証なしでアクセス
+          });
+          // Publicリポジトリならアクセスできるはず（ここに来ることはない）
+        } catch (publicError: unknown) {
+          const publicErr = publicError as { status?: number };
+          if (publicErr?.status === 404) {
+            throw new Error(
+              `リポジトリ "${OWNER}/${REPO}" が見つかりません。\n` +
+              `- リポジトリ名またはオーナー名が間違っている可能性があります\n` +
+              `- GitHub上でリポジトリが存在するか確認してください: https://github.com/${OWNER}/${REPO}`
+            );
+          }
+        }
+        
+        // 認証ありで404 = Privateリポジトリで権限がない
         throw new Error(
-          `リポジトリ "${OWNER}/${REPO}" が見つかりません。\n` +
-          `以下の可能性があります:\n` +
-          `- リポジトリ名またはオーナー名が間違っている\n` +
-          `- リポジトリが Private で、トークンに "repo" スコープがない\n` +
-          `- リポジトリが削除された、または名前が変更された\n` +
-          `- SSO 必須の組織で、トークンに SSO Grant が付与されていない`
+          `リポジトリ "${OWNER}/${REPO}" へのアクセスが拒否されました。\n` +
+          `このリポジトリは Private リポジトリの可能性が高いです。\n\n` +
+          `以下の点を確認してください:\n` +
+          `1. GITHUB_TOKEN に "repo" スコープが付与されているか\n` +
+          `   トークン作成時: https://github.com/settings/tokens/new\n` +
+          `   → "repo" スコープにチェックを入れる\n\n` +
+          `2. SSO 必須の組織の場合:\n` +
+          `   - トークンに SSO Grant が付与されているか確認\n` +
+          `   - https://github.com/settings/tokens で対象のトークンを選択\n` +
+          `   - "Enable SSO" をクリックして組織を承認\n\n` +
+          `3. トークンが正しく設定されているか:\n` +
+          `   - Vercel の場合: Settings → Environment Variables\n` +
+          `   - ローカルの場合: .env.local ファイル\n\n` +
+          `4. リポジトリへのアクセス権限があるか:\n` +
+          `   - リポジトリの Settings → Collaborators で確認`
         );
       }
       if (repoErr?.status === 401) {
