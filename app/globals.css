@@ -24,3 +24,43 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* GitHub Alerts */
+[class^="markdown-alert"] {
+  padding: 1rem;
+  margin: 1rem 0;
+  border-left: 4px solid;
+  border-radius: 6px;
+}
+
+.markdown-alert-note {
+  background-color: #ddf4ff;
+  border-color: #0969da;
+}
+
+.markdown-alert-tip {
+  background-color: #dcfce7;
+  border-color: #16a34a;
+}
+
+.markdown-alert-important {
+  background-color: #fce7f3;
+  border-color: #be185d;
+}
+
+.markdown-alert-warning {
+  background-color: #fef3c7;
+  border-color: #d97706;
+}
+
+.markdown-alert-caution {
+  background-color: #fee2e2;
+  border-color: #dc2626;
+}
+
+/* Mermaid wrapper (optional) */
+.mermaid {
+  display: flex;
+  justify-content: center;
+  margin: 2rem 0;
+}
