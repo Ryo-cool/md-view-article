@@ -1,8 +1,10 @@
 import matter from 'gray-matter';
 import { MDXRemote } from 'next-mdx-remote/rsc';
 import remarkGfm from 'remark-gfm';
-import { rehypeGithubAlerts } from 'rehype-github-alerts';
 import { listMarkdownFiles, fetchMarkdown } from '@/lib/content';
+import * as rehypeGithubAlertsModule from 'rehype-github-alerts';
+
+const rehypeGithubAlerts = rehypeGithubAlertsModule.rehypeGithubAlerts;
 
 export const dynamic = 'force-static';
 
