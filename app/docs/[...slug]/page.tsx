@@ -1,8 +1,7 @@
 import matter from 'gray-matter';
 import { MDXRemote } from 'next-mdx-remote/rsc';
 import remarkGfm from 'remark-gfm';
-import rehypeGithubAlerts from 'rehype-github-alerts';
-import rehypeMermaid from 'rehype-mermaid';
+import { rehypeGithubAlerts } from 'rehype-github-alerts';
 import { listMarkdownFiles, fetchMarkdown } from '@/lib/content';
 
 export const dynamic = 'force-static';
@@ -60,10 +59,7 @@ export default async function DocPage({
         options={{
           mdxOptions: {
             remarkPlugins: [remarkGfm],
-            rehypePlugins: [
-              rehypeGithubAlerts,
-              [rehypeMermaid, { strategy: 'inline-svg' }],
-            ],
+            rehypePlugins: [rehypeGithubAlerts],
           },
         }}
       />
