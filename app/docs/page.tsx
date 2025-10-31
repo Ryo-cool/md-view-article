@@ -24,26 +24,36 @@ export default async function DocsIndex() {
   }, {} as Record<string, string[]>);
 
   return (
-    <main className="prose prose-lg max-w-none mx-auto p-6">
-      <h1>ドキュメント一覧</h1>
-      {Object.entries(groupedItems)
-        .sort(([a], [b]) => a.localeCompare(b, 'ja'))
-        .map(([dir, slugs]) => (
-          <section key={dir} className="mb-8">
-            <h2 className="text-2xl font-semibold mb-4 border-b pb-2">{dir}</h2>
-            <ul>
-              {slugs
-                .sort((a, b) => a.localeCompare(b, 'ja'))
-                .map((slug) => (
-                  <li key={slug}>
-                    <Link href={`/docs/${slug}`} className="text-blue-600 hover:text-blue-800 underline">
-                      {slug.replace(`${dir}/`, '')}
-                    </Link>
-                  </li>
-                ))}
-            </ul>
-          </section>
-        ))}
+    <main className="min-h-screen bg-gray-50">
+      <div className="max-w-5xl mx-auto px-6 py-12">
+        <h1 className="text-4xl font-bold mb-8 text-gray-900">ドキュメント一覧</h1>
+        <div className="grid gap-6">
+          {Object.entries(groupedItems)
+            .sort(([a], [b]) => a.localeCompare(b, 'ja'))
+            .map(([dir, slugs]) => (
+              <section key={dir} className="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h2 className="text-2xl font-semibold mb-4 text-gray-800 border-b border-gray-200 pb-3">
+                  📁 {dir}
+                </h2>
+                <ul className="space-y-2">
+                  {slugs
+                    .sort((a, b) => a.localeCompare(b, 'ja'))
+                    .map((slug) => (
+                      <li key={slug}>
+                        <Link
+                          href={`/docs/${slug}`}
+                          className="text-blue-600 hover:text-blue-800 hover:underline flex items-center space-x-2 py-1"
+                        >
+                          <span>📄</span>
+                          <span>{slug.replace(`${dir}/`, '')}</span>
+                        </Link>
+                      </li>
+                    ))}
+                </ul>
+              </section>
+            ))}
+        </div>
+      </div>
     </main>
   );
 }

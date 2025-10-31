@@ -197,9 +197,16 @@ export default async function DocPage({
   // slug が undefined の場合の処理
   if (!resolvedParams?.slug || resolvedParams.slug.length === 0) {
     return (
-      <main className="prose mx-auto p-6">
-        <h1>Not found</h1>
-        <p>指定されたドキュメントが見つかりませんでした。</p>
+      <main className="min-h-screen bg-gray-50">
+        <div className="max-w-4xl mx-auto px-6 py-12">
+          <div className="bg-white rounded-lg shadow-sm p-8 border border-gray-200 text-center">
+            <h1 className="text-4xl font-bold text-gray-900 mb-4">404 - Not Found</h1>
+            <p className="text-gray-600 mb-6">指定されたドキュメントが見つかりませんでした。</p>
+            <a href="/docs" className="text-blue-600 hover:text-blue-800 underline">
+              ドキュメント一覧へ戻る
+            </a>
+          </div>
+        </div>
       </main>
     );
   }
@@ -209,9 +216,16 @@ export default async function DocPage({
   
   if (candidates.length === 0) {
     return (
-      <main className="prose mx-auto p-6">
-        <h1>Not found</h1>
-        <p>指定されたドキュメントが見つかりませんでした。</p>
+      <main className="min-h-screen bg-gray-50">
+        <div className="max-w-4xl mx-auto px-6 py-12">
+          <div className="bg-white rounded-lg shadow-sm p-8 border border-gray-200 text-center">
+            <h1 className="text-4xl font-bold text-gray-900 mb-4">404 - Not Found</h1>
+            <p className="text-gray-600 mb-6">指定されたドキュメントが見つかりませんでした。</p>
+            <a href="/docs" className="text-blue-600 hover:text-blue-800 underline">
+              ドキュメント一覧へ戻る
+            </a>
+          </div>
+        </div>
       </main>
     );
   }
@@ -227,9 +241,16 @@ export default async function DocPage({
 
   if (!raw) {
     return (
-      <main className="prose mx-auto p-6">
-        <h1>Not found</h1>
-        <p>指定されたドキュメントが見つかりませんでした。</p>
+      <main className="min-h-screen bg-gray-50">
+        <div className="max-w-4xl mx-auto px-6 py-12">
+          <div className="bg-white rounded-lg shadow-sm p-8 border border-gray-200 text-center">
+            <h1 className="text-4xl font-bold text-gray-900 mb-4">404 - Not Found</h1>
+            <p className="text-gray-600 mb-6">指定されたドキュメントが見つかりませんでした。</p>
+            <a href="/docs" className="text-blue-600 hover:text-blue-800 underline">
+              ドキュメント一覧へ戻る
+            </a>
+          </div>
+        </div>
       </main>
     );
   }
@@ -237,14 +258,18 @@ export default async function DocPage({
   const { content } = matter(raw);
 
   return (
-    <main className="prose prose-lg max-w-none mx-auto p-6">
-      <ReactMarkdown
-        components={markdownComponents}
-        remarkPlugins={[remarkGfm, remarkBreaks]}
-        rehypePlugins={[rehypeGithubAlerts, rehypeRaw]}
-      >
-        {content}
-      </ReactMarkdown>
+    <main className="min-h-screen bg-gray-50">
+      <div className="max-w-4xl mx-auto px-6 py-12">
+        <article className="bg-white rounded-lg shadow-sm p-8 md:p-12 border border-gray-200">
+          <ReactMarkdown
+            components={markdownComponents}
+            remarkPlugins={[remarkGfm, remarkBreaks]}
+            rehypePlugins={[rehypeGithubAlerts, rehypeRaw]}
+          >
+            {content}
+          </ReactMarkdown>
+        </article>
+      </div>
     </main>
   );
 }
