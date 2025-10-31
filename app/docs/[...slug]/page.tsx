@@ -12,6 +12,83 @@ const rehypeGithubAlerts = rehypeGithubAlertsModule.rehypeGithubAlerts;
 
 // Markdown レンダリング時のカスタムコンポーネント
 const markdownComponents: Components = {
+  h1: ({ children, ...props }: any) => (
+    <h1 className="text-4xl font-bold mt-8 mb-4 leading-tight" {...props}>
+      {children}
+    </h1>
+  ),
+  h2: ({ children, ...props }: any) => (
+    <h2 className="text-3xl font-bold mt-6 mb-3 leading-tight" {...props}>
+      {children}
+    </h2>
+  ),
+  h3: ({ children, ...props }: any) => (
+    <h3 className="text-2xl font-semibold mt-5 mb-2 leading-tight" {...props}>
+      {children}
+    </h3>
+  ),
+  h4: ({ children, ...props }: any) => (
+    <h4 className="text-xl font-semibold mt-4 mb-2 leading-tight" {...props}>
+      {children}
+    </h4>
+  ),
+  h5: ({ children, ...props }: any) => (
+    <h5 className="text-lg font-semibold mt-3 mb-2 leading-tight" {...props}>
+      {children}
+    </h5>
+  ),
+  h6: ({ children, ...props }: any) => (
+    <h6 className="text-base font-semibold mt-3 mb-2 leading-tight" {...props}>
+      {children}
+    </h6>
+  ),
+  p: ({ children, ...props }: any) => (
+    <p className="mb-4 leading-7" {...props}>
+      {children}
+    </p>
+  ),
+  ul: ({ children, ...props }: any) => (
+    <ul className="list-disc list-inside mb-4 space-y-2 ml-4" {...props}>
+      {children}
+    </ul>
+  ),
+  ol: ({ children, ...props }: any) => (
+    <ol className="list-decimal list-inside mb-4 space-y-2 ml-4" {...props}>
+      {children}
+    </ol>
+  ),
+  li: ({ children, ...props }: any) => (
+    <li className="mb-1" {...props}>
+      {children}
+    </li>
+  ),
+  blockquote: ({ children, ...props }: any) => (
+    <blockquote className="border-l-4 border-gray-300 pl-4 italic my-4 text-gray-700" {...props}>
+      {children}
+    </blockquote>
+  ),
+  table: ({ children, ...props }: any) => (
+    <div className="overflow-x-auto my-4">
+      <table className="min-w-full border-collapse border border-gray-300" {...props}>
+        {children}
+      </table>
+    </div>
+  ),
+  thead: ({ children, ...props }: any) => (
+    <thead className="bg-gray-100" {...props}>
+      {children}
+    </thead>
+  ),
+  th: ({ children, ...props }: any) => (
+    <th className="border border-gray-300 px-4 py-2 text-left font-semibold" {...props}>
+      {children}
+    </th>
+  ),
+  td: ({ children, ...props }: any) => (
+    <td className="border border-gray-300 px-4 py-2" {...props}>
+      {children}
+    </td>
+  ),
   code({ inline, className, children, ...props }: any) {
     const match = /language-(\w+)/.exec(className || '');
     const language = match && match[1];
@@ -22,25 +99,44 @@ const markdownComponents: Components = {
 
     if (inline) {
       return (
-        <code className={className} {...props}>
+        <code className="bg-gray-100 text-red-600 px-1.5 py-0.5 rounded text-sm font-mono" {...props}>
           {children}
         </code>
       );
     }
 
     return (
-      <pre className={className}>
-        <code {...props}>{children}</code>
+      <pre className="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto mb-4">
+        <code className="text-sm font-mono" {...props}>
+          {children}
+        </code>
       </pre>
     );
   },
   a({ href, children, ...props }: any) {
     return (
-      <a href={href} target="_blank" rel="noopener noreferrer" {...props}>
+      <a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-blue-600 hover:text-blue-800 underline"
+        {...props}
+      >
         {children}
       </a>
     );
   },
+  hr: ({ ...props }: any) => (
+    <hr className="my-8 border-t border-gray-300" {...props} />
+  ),
+  img: ({ src, alt, ...props }: any) => (
+    <img
+      src={src}
+      alt={alt}
+      className="max-w-full h-auto my-4 rounded-lg"
+      {...props}
+    />
+  ),
 };
 
 export const dynamic = 'force-static';
