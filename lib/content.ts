@@ -39,28 +39,64 @@ interface GitHubContent {
 }
 
 async function getHeadSha(): Promise<string> {
-  const ref = await ofetch<GitHubRef>(
-    `https://api.github.com/repos/${OWNER}/${REPO}/git/refs/heads/${BRANCH}`,
-    {
-      headers: { Authorization: `Bearer ${TOKEN}` },
+  try {
+    const ref = await ofetch<GitHubRef>(
+      `https://api.github.com/repos/${OWNER}/${REPO}/git/refs/heads/${BRANCH}`,
+      {
+        headers: { Authorization: `Bearer ${TOKEN}` },
+      }
+    );
+    return ref.object.sha;
+  } catch (error: unknown) {
+    const err = error as { status?: number; message?: string };
+    if (err?.status === 404) {
+      throw new Error(
+        `リポジトリが見つかりません: ${OWNER}/${REPO}\n` +
+        `ブランチ "${BRANCH}" が存在しない可能性があります。\n` +
+        `以下の点を確認してください:\n` +
+        `- リポジトリ名とオーナー名が正しいか\n` +
+        `- ブランチ名が正しいか（main / master / その他）\n` +
+        `- リポジトリが Private の場合、GITHUB_TOKEN に適切な権限があるか（repo スコープが必要）\n` +
+        `- SSO 必須の組織では、GITHUB_TOKEN に SSO Grant が付与されているか`
+      );
     }
-  );
-  return ref.object.sha;
+    if (err?.status === 401) {
+      throw new Error(
+        `認証に失敗しました。GITHUB_TOKEN が無効または権限不足です。\n` +
+        `- トークンが有効か確認してください\n` +
+        `- トークンに repo スコープ（Private リポジトリの場合）が付与されているか確認してください\n` +
+        `- SSO 必須の組織では、トークンに SSO Grant が付与されているか確認してください`
+      );
+    }
+    throw new Error(
+      `GitHub API エラー: ${err?.message || String(error)}\n` +
+      `リポジトリ: ${OWNER}/${REPO}, ブランチ: ${BRANCH}`
+    );
+  }
 }
 
 export async function listMarkdownFiles(): Promise<string[]> {
-  const sha = await getHeadSha();
-  const tree = await ofetch<GitHubTree>(
-    `https://api.github.com/repos/${OWNER}/${REPO}/git/trees/${sha}?recursive=1`,
-    { headers: { Authorization: `Bearer ${TOKEN}` } }
-  );
+  try {
+    const sha = await getHeadSha();
+    const tree = await ofetch<GitHubTree>(
+      `https://api.github.com/repos/${OWNER}/${REPO}/git/trees/${sha}?recursive=1`,
+      { headers: { Authorization: `Bearer ${TOKEN}` } }
+    );
 
-  const files = tree.tree
-    .filter((n) => n.type === 'blob' && (n.path.endsWith('.md') || n.path.endsWith('.mdx')))
-    .filter((n) => (DIR ? n.path.startsWith(DIR + '/') : true))
-    .map((n) => n.path);
+    const files = tree.tree
+      .filter((n) => n.type === 'blob' && (n.path.endsWith('.md') || n.path.endsWith('.mdx')))
+      .filter((n) => (DIR ? n.path.startsWith(DIR + '/') : true))
+      .map((n) => n.path);
 
-  return files;
+    return files;
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      throw error; // getHeadSha からのエラーをそのまま伝播
+    }
+    throw new Error(
+      `Markdown ファイルの一覧取得に失敗しました: ${String(error)}`
+    );
+  }
 }
 
 export async function fetchMarkdown(relPath: string): Promise<string> {
