@@ -3,8 +3,28 @@ import { MDXRemote } from 'next-mdx-remote/rsc';
 import remarkGfm from 'remark-gfm';
 import { listMarkdownFiles, fetchMarkdown } from '@/lib/content';
 import * as rehypeGithubAlertsModule from 'rehype-github-alerts';
+import Mermaid from '@/components/Mermaid';
 
 const rehypeGithubAlerts = rehypeGithubAlertsModule.rehypeGithubAlerts;
+
+// MDXコンポーネントのカスタム設定
+const components = {
+  // Mermaidコードブロックを処理
+  code: ({ className, children, ...props }: any) => {
+    const match = /language-(\w+)/.exec(className || '');
+    const language = match && match[1];
+    
+    if (language === 'mermaid') {
+      return <Mermaid chart={String(children).replace(/\n$/, '')} />;
+    }
+    
+    return (
+      <code className={className} {...props}>
+        {children}
+      </code>
+    );
+  },
+};
 
 export const dynamic = 'force-static';
 
@@ -104,16 +124,17 @@ export default async function DocPage({
 
   try {
     return (
-      <main className="prose mx-auto p-6">
+      <main className="prose prose-lg max-w-none mx-auto p-6">
         <MDXRemote
           source={content}
+          components={components}
           options={{
-          mdxOptions: {
-            remarkPlugins: [remarkGfm],
-            rehypePlugins: [rehypeGithubAlerts],
-            format: 'md', // MDXではなくMarkdownとして処理（より安全）
-            development: false,
-          },
+            mdxOptions: {
+              remarkPlugins: [remarkGfm],
+              rehypePlugins: [rehypeGithubAlerts],
+              format: 'mdx',
+              development: false,
+            },
             parseFrontmatter: false, // gray-matter で既にパース済み
           }}
         />
