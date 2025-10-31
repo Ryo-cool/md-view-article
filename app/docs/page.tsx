@@ -24,15 +24,15 @@ export default async function DocsIndex() {
   }, {} as Record<string, string[]>);
 
   return (
-    <main className="min-h-screen bg-gray-50">
+    <main className="min-h-screen bg-white">
       <div className="max-w-5xl mx-auto px-6 py-12">
         <h1 className="text-4xl font-bold mb-8 text-gray-900">ドキュメント一覧</h1>
         <div className="grid gap-6">
           {Object.entries(groupedItems)
             .sort(([a], [b]) => a.localeCompare(b, 'ja'))
             .map(([dir, slugs]) => (
-              <section key={dir} className="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
-                <h2 className="text-2xl font-semibold mb-4 text-gray-800 border-b border-gray-200 pb-3">
+              <section key={dir} className="bg-white rounded-lg shadow-md p-6 border border-gray-300">
+                <h2 className="text-2xl font-semibold mb-4 text-gray-900 border-b border-gray-300 pb-3">
                   📁 {dir}
                 </h2>
                 <ul className="space-y-2">
@@ -42,7 +42,7 @@ export default async function DocsIndex() {
                       <li key={slug}>
                         <Link
                           href={`/docs/${slug}`}
-                          className="text-blue-600 hover:text-blue-800 hover:underline flex items-center space-x-2 py-1"
+                          className="text-blue-700 hover:text-blue-900 hover:underline flex items-center space-x-2 py-1 font-medium"
                         >
                           <span>📄</span>
                           <span>{slug.replace(`${dir}/`, '')}</span>

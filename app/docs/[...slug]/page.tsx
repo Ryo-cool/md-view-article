@@ -13,79 +13,79 @@ const rehypeGithubAlerts = rehypeGithubAlertsModule.rehypeGithubAlerts;
 // Markdown レンダリング時のカスタムコンポーネント
 const markdownComponents: Components = {
   h1: ({ children, ...props }: any) => (
-    <h1 className="text-4xl font-bold mt-8 mb-4 leading-tight" {...props}>
+    <h1 className="text-4xl font-bold mt-8 mb-4 leading-tight text-gray-900" {...props}>
       {children}
     </h1>
   ),
   h2: ({ children, ...props }: any) => (
-    <h2 className="text-3xl font-bold mt-6 mb-3 leading-tight" {...props}>
+    <h2 className="text-3xl font-bold mt-6 mb-3 leading-tight text-gray-900" {...props}>
       {children}
     </h2>
   ),
   h3: ({ children, ...props }: any) => (
-    <h3 className="text-2xl font-semibold mt-5 mb-2 leading-tight" {...props}>
+    <h3 className="text-2xl font-semibold mt-5 mb-2 leading-tight text-gray-900" {...props}>
       {children}
     </h3>
   ),
   h4: ({ children, ...props }: any) => (
-    <h4 className="text-xl font-semibold mt-4 mb-2 leading-tight" {...props}>
+    <h4 className="text-xl font-semibold mt-4 mb-2 leading-tight text-gray-900" {...props}>
       {children}
     </h4>
   ),
   h5: ({ children, ...props }: any) => (
-    <h5 className="text-lg font-semibold mt-3 mb-2 leading-tight" {...props}>
+    <h5 className="text-lg font-semibold mt-3 mb-2 leading-tight text-gray-900" {...props}>
       {children}
     </h5>
   ),
   h6: ({ children, ...props }: any) => (
-    <h6 className="text-base font-semibold mt-3 mb-2 leading-tight" {...props}>
+    <h6 className="text-base font-semibold mt-3 mb-2 leading-tight text-gray-900" {...props}>
       {children}
     </h6>
   ),
   p: ({ children, ...props }: any) => (
-    <p className="mb-4 leading-7" {...props}>
+    <p className="mb-4 leading-7 text-gray-800" {...props}>
       {children}
     </p>
   ),
   ul: ({ children, ...props }: any) => (
-    <ul className="list-disc list-inside mb-4 space-y-2 ml-4" {...props}>
+    <ul className="list-disc list-inside mb-4 space-y-2 ml-4 text-gray-800" {...props}>
       {children}
     </ul>
   ),
   ol: ({ children, ...props }: any) => (
-    <ol className="list-decimal list-inside mb-4 space-y-2 ml-4" {...props}>
+    <ol className="list-decimal list-inside mb-4 space-y-2 ml-4 text-gray-800" {...props}>
       {children}
     </ol>
   ),
   li: ({ children, ...props }: any) => (
-    <li className="mb-1" {...props}>
+    <li className="mb-1 text-gray-800" {...props}>
       {children}
     </li>
   ),
   blockquote: ({ children, ...props }: any) => (
-    <blockquote className="border-l-4 border-gray-300 pl-4 italic my-4 text-gray-700" {...props}>
+    <blockquote className="border-l-4 border-gray-400 pl-4 italic my-4 text-gray-800 bg-gray-50 py-2 rounded-r" {...props}>
       {children}
     </blockquote>
   ),
   table: ({ children, ...props }: any) => (
     <div className="overflow-x-auto my-4">
-      <table className="min-w-full border-collapse border border-gray-300" {...props}>
+      <table className="min-w-full border-collapse border border-gray-400" {...props}>
         {children}
       </table>
     </div>
   ),
   thead: ({ children, ...props }: any) => (
-    <thead className="bg-gray-100" {...props}>
+    <thead className="bg-gray-200" {...props}>
       {children}
     </thead>
   ),
   th: ({ children, ...props }: any) => (
-    <th className="border border-gray-300 px-4 py-2 text-left font-semibold" {...props}>
+    <th className="border border-gray-400 px-4 py-2 text-left font-semibold text-gray-900" {...props}>
       {children}
     </th>
   ),
   td: ({ children, ...props }: any) => (
-    <td className="border border-gray-300 px-4 py-2" {...props}>
+    <td className="border border-gray-400 px-4 py-2 text-gray-800" {...props}>
       {children}
     </td>
   ),
@@ -258,9 +258,9 @@ export default async function DocPage({
   const { content } = matter(raw);
 
   return (
-    <main className="min-h-screen bg-gray-50">
+    <main className="min-h-screen bg-white">
       <div className="max-w-4xl mx-auto px-6 py-12">
-        <article className="bg-white rounded-lg shadow-sm p-8 md:p-12 border border-gray-200">
+        <article className="bg-white rounded-lg shadow-md p-8 md:p-12 border border-gray-300">
           <ReactMarkdown
             components={markdownComponents}
             remarkPlugins={[remarkGfm, remarkBreaks]}
