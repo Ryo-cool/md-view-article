@@ -1,8 +1,19 @@
 import { ofetch } from 'ofetch';
 
-const TOKEN = process.env.GITHUB_TOKEN!;
-const OWNER = process.env.CONTENT_REPO_OWNER!;
-const REPO = process.env.CONTENT_REPO_NAME!;
+// 環境変数の取得（ビルド時に未設定の場合はエラーを投げる）
+function getEnvVar(name: string): string {
+  const value = process.env[name];
+  if (!value) {
+    throw new Error(
+      `環境変数 ${name} が設定されていません。.env.local ファイルを作成するか、Vercel の環境変数設定を確認してください。`
+    );
+  }
+  return value;
+}
+
+const TOKEN = getEnvVar('GITHUB_TOKEN');
+const OWNER = getEnvVar('CONTENT_REPO_OWNER');
+const REPO = getEnvVar('CONTENT_REPO_NAME');
 const DIR = (process.env.CONTENT_DIR ?? '').replace(/\/+$/, ''); // 末尾/除去
 const BRANCH = process.env.CONTENT_BRANCH || 'main';
 
