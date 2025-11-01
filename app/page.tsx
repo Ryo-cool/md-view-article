@@ -8,22 +8,23 @@ export default function Home() {
   // TODO: 認証機能が必要な場合、以下を有効化
   // const session = await getServerSession(authOptions);
   return (
-    <main className="flex-1 bg-gradient-to-b from-gray-50 to-white">
+    <main className="flex-1" style={{ background: '#e0e5ec' }}>
       <div className="max-w-6xl mx-auto px-6 py-20 md:py-32">
         <div className="text-center">
           {/* Hero Section */}
           <div className="mb-12">
-            <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
+            <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight" style={{ color: '#2c3e50' }}>
               📚 Markdown View Article
             </h1>
-            <p className="text-xl md:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto leading-relaxed" style={{ color: '#5a6c7d' }}>
               GitHub リポジトリから Markdown ファイルを取得し、<br />
               美しい静的サイトとして配信します
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
               <Link
                 href="/docs"
-                className="inline-flex items-center justify-center rounded-lg bg-blue-600 px-8 py-4 text-white font-semibold transition-all hover:bg-blue-700 hover:shadow-lg transform hover:scale-105"
+                className="neu-button inline-flex items-center justify-center px-10 py-4 font-bold text-lg"
+                style={{ color: '#2c3e50' }}
               >
                 📖 ドキュメント一覧を見る
               </Link>
@@ -31,7 +32,8 @@ export default function Home() {
                 href="https://github.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center rounded-lg border-2 border-gray-300 px-8 py-4 text-gray-700 font-semibold transition-all hover:border-gray-400 hover:bg-gray-50"
+                className="neu-button inline-flex items-center justify-center px-10 py-4 font-bold text-lg"
+                style={{ color: '#2c3e50' }}
               >
                 <svg
                   className="w-5 h-5 mr-2"
@@ -51,32 +53,32 @@ export default function Home() {
 
           {/* Features Section */}
           <div className="mt-24 grid md:grid-cols-3 gap-8 text-left">
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+            <div className="neu-card p-8">
               <div className="text-4xl mb-4">🚀</div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">
+              <h3 className="text-xl font-bold mb-3" style={{ color: '#2c3e50' }}>
                 高速な静的サイト
               </h3>
-              <p className="text-gray-600">
+              <p style={{ color: '#5a6c7d' }}>
                 Next.js の SSG を使用し、ビルド時に全ページを生成。読み込み速度が高速です。
               </p>
             </div>
 
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+            <div className="neu-card p-8">
               <div className="text-4xl mb-4">📝</div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">
+              <h3 className="text-xl font-bold mb-3" style={{ color: '#2c3e50' }}>
                 Markdown & Mermaid 対応
               </h3>
-              <p className="text-gray-600">
+              <p style={{ color: '#5a6c7d' }}>
                 GitHub Flavored Markdown、Mermaid 図、アラートブロックをサポート。
               </p>
             </div>
 
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+            <div className="neu-card p-8">
               <div className="text-4xl mb-4">🔄</div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">
+              <h3 className="text-xl font-bold mb-3" style={{ color: '#2c3e50' }}>
                 自動デプロイ
               </h3>
-              <p className="text-gray-600">
+              <p style={{ color: '#5a6c7d' }}>
                 GitHub リポジトリの変更を検知し、Vercel Deploy Hook で自動反映。
               </p>
             </div>

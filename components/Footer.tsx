@@ -1,8 +1,8 @@
 export default function Footer() {
   return (
-    <footer className="bg-white border-t border-gray-200 mt-auto">
+    <footer className="mt-auto" style={{ background: '#e0e5ec' }}>
       <div className="max-w-7xl mx-auto px-6 py-8">
-        <div className="text-center text-gray-600 text-sm">
+        <div className="neu-flat px-6 py-6 text-center text-sm" style={{ color: '#5a6c7d' }}>
           <p>© {new Date().getFullYear()} Markdown Docs. All rights reserved.</p>
           <p className="mt-2">
             Powered by{' '}
@@ -10,7 +10,8 @@ export default function Footer() {
               href="https://nextjs.org"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-blue-600 hover:text-blue-800 underline"
+              className="font-semibold hover:opacity-70 transition-opacity"
+              style={{ color: '#4a90e2' }}
             >
               Next.js
             </a>
@@ -19,7 +20,8 @@ export default function Footer() {
               href="https://vercel.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-blue-600 hover:text-blue-800 underline"
+              className="font-semibold hover:opacity-70 transition-opacity"
+              style={{ color: '#4a90e2' }}
             >
               Vercel
             </a>

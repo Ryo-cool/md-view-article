@@ -2,17 +2,18 @@ import Link from 'next/link';
 
 export default function Header() {
   return (
-    <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
+    <header className="sticky top-0 z-50" style={{ background: '#e0e5ec' }}>
       <div className="max-w-7xl mx-auto px-6 py-4">
-        <div className="flex items-center justify-between">
-          <Link href="/" className="flex items-center space-x-2">
-            <span className="text-2xl font-bold text-gray-900">📚</span>
-            <span className="text-xl font-semibold text-gray-900">Markdown Docs</span>
+        <div className="neu-flat px-6 py-4 flex items-center justify-between">
+          <Link href="/" className="flex items-center space-x-2 group">
+            <span className="text-2xl">📚</span>
+            <span className="text-xl font-bold" style={{ color: '#2c3e50' }}>Markdown Docs</span>
           </Link>
           <nav className="flex items-center space-x-6">
             <Link
               href="/docs"
-              className="text-gray-600 hover:text-gray-900 font-medium transition-colors"
+              className="neu-button px-5 py-2.5 font-medium transition-all"
+              style={{ color: '#2c3e50' }}
             >
               ドキュメント一覧
             </Link>
@@ -33,8 +34,9 @@ export default function Header() {
               href="https://github.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-600 hover:text-gray-900 transition-colors"
+              className="neu-button p-2.5 inline-flex items-center justify-center transition-all"
               aria-label="GitHub"
+              style={{ color: '#2c3e50' }}
             >
               <svg
                 className="w-6 h-6"
