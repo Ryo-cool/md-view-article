@@ -22,12 +22,19 @@ Private Markdown リポジトリ（Mermaid 含む）を GitHub API 経由で取�
 
 ### 1. 環境変数の設定
 
-`.env.local` ファイルを作成し、以下の環境変数を設定してください：
+プロジェクトルートに `.env.local` ファイルを作成し、以下の環境変数を設定してください：
+
+```bash
+cp .env.local.example .env.local
+```
+
+`.env.local` ファイルを編集：
 
 ```bash
 # GitHub Personal Access Token (PAT)
 # 権限: repo (read のみ)
 # SSO 必須の組織では SSO Grant を忘れずに付与
+# トークン作成: https://github.com/settings/tokens
 GITHUB_TOKEN=ghp_xxxxxxxxx
 
 # Markdown リポジトリの情報
@@ -40,6 +47,8 @@ CONTENT_DIR=md
 # 対象ブランチ
 CONTENT_BRANCH=main
 ```
+
+**重要**: `.env.local` ファイルは `.gitignore` に含まれているため、Gitにコミットされません。
 
 ### 2. 依存パッケージのインストール
 
@@ -119,17 +128,37 @@ jobs:
 - **md リポジトリ**: Deploy Hook URL 以外の秘密情報は持たない
 - **Hook URL**: GitHub Secrets で管理し、ログ等に出力しない
 
+## テスト
+
+このプロジェクトには、Markdownレンダリング機能の包括的なテストが含まれています。
+
+### テスト実行
+
+```bash
+# 全テスト実行
+npm test
+
+# 監視モード
+npm run test:watch
+
+# カバレッジ測定
+npm run test:coverage
+```
+
+詳細は [TESTING.md](./TESTING.md) を参照してください。
+
 ## 技術スタック
 
 - **Next.js 15** (App Router, SSG)
 - **TypeScript**
 - **Tailwind CSS** (@tailwindcss/typography)
-- **next-mdx-remote**: MDX レンダリング
-- **rehype-mermaid**: Mermaid 図の SVG 化（inline-svg strategy）
+- **react-markdown**: Markdown レンダリング
 - **rehype-github-alerts**: GitHub 互換アラート
 - **remark-gfm**: GitHub Flavored Markdown
+- **remark-breaks**: 改行サポート
 - **ofetch**: GitHub API クライアント
 - **gray-matter**: Frontmatter パース
+- **Jest + Testing Library**: テストフレームワーク
 
 ## ディレクトリ構成
 
@@ -137,14 +166,27 @@ jobs:
 /
 ├── app/
 │   ├── docs/
-│   │   ├── page.tsx          # 一覧ページ
+│   │   ├── page.tsx              # 一覧ページ
 │   │   └── [...slug]/
-│   │       └── page.tsx      # 個別ドキュメントページ
+│   │       └── page.tsx          # 個別ドキュメントページ
 │   ├── layout.tsx
-│   └── globals.css           # Alerts/Mermaid スタイル
+│   └── globals.css               # グローバルスタイル
+├── components/
+│   ├── MarkdownRenderer.tsx      # Markdownレンダラー
+│   ├── Mermaid.tsx               # Mermaid図コンポーネント
+│   ├── Header.tsx
+│   └── Footer.tsx
 ├── lib/
-│   └── content.ts            # GitHub API ユーティリティ
-├── .env.local                # 環境変数（gitignore）
+│   ├── content.ts                # GitHub API ユーティリティ
+│   └── markdownComponents.tsx    # カスタムMarkdownコンポーネント
+├── __tests__/
+│   ├── MarkdownComponents.test.tsx    # コンポーネントテスト
+│   └── MarkdownIntegration.test.tsx   # 統合テスト
+├── __mocks__/                    # テスト用モック
+├── .env.local.example            # 環境変数テンプレート
+├── .env.local                    # 環境変数（gitignore）
+├── jest.config.js                # Jest設定
+├── TESTING.md                    # テストドキュメント
 └── README.md
 ```
 
