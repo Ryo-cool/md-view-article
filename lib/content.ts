@@ -213,3 +213,41 @@ export async function fetchMarkdown(relPath: string): Promise<string> {
   return buff.toString('utf8');
 }
 
+/**
+ * GitHubリポジトリから画像ファイルを取得し、Base64データURLとして返す
+ * @param relPath リポジトリルートからの相対パス（例: "docs/images/photo.png"）
+ * @returns Base64データURL（例: "data:image/png;base64,..."）
+ */
+export async function fetchImage(relPath: string): Promise<string | null> {
+  try {
+    const url = `https://api.github.com/repos/${OWNER}/${REPO}/contents/${relPath}?ref=${BRANCH}`;
+    const data = await ofetch<GitHubContent>(url, {
+      headers: { Authorization: `Bearer ${TOKEN}` },
+    });
+
+    // 画像のMIMEタイプを拡張子から判定
+    const ext = relPath.split('.').pop()?.toLowerCase() || '';
+    const mimeTypes: Record<string, string> = {
+      png: 'image/png',
+      jpg: 'image/jpeg',
+      jpeg: 'image/jpeg',
+      gif: 'image/gif',
+      svg: 'image/svg+xml',
+      webp: 'image/webp',
+      ico: 'image/x-icon',
+    };
+    const mimeType = mimeTypes[ext] || 'image/png';
+
+    // Base64データURLを構築
+    return `data:${mimeType};base64,${data.content}`;
+  } catch (error: unknown) {
+    const err = error as { status?: number; message?: string };
+    if (err?.status === 404) {
+      // 画像が見つからない場合はnullを返す
+      return null;
+    }
+    console.error(`画像の取得に失敗しました: ${relPath}`, error);
+    return null;
+  }
+}
+
