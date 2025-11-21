@@ -235,9 +235,8 @@ export async function fetchImage(relPath: string): Promise<string | null> {
     // GitHub Contents APIは1MB超でcontentがnullになるので、download_url経由で再取得する
     let base64 = (data.content || '').replace(/\s+/g, '');
     if (!base64 && data.download_url) {
-      const buffer = await ofetch<ArrayBuffer>(data.download_url, {
-        responseType: 'arrayBuffer',
-      });
+      const res = await fetch(data.download_url);
+      const buffer = await res.arrayBuffer();
       base64 = Buffer.from(buffer).toString('base64');
     }
 
