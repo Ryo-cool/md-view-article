@@ -172,6 +172,12 @@ export default async function DocPage({
       });
       if (!imageMap.has(imageSrc)) {
         const imageData = await fetchImage(resolvedPath);
+        console.log('[image] fetch result', {
+          original: imageSrc,
+          resolved: resolvedPath,
+          hasData: Boolean(imageData),
+          length: imageData?.length ?? 0,
+        });
         imageMap.set(imageSrc, imageData);
       }
     }
