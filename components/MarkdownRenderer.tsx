@@ -73,7 +73,8 @@ export default function MarkdownRenderer({ content, imageMap }: MarkdownRenderer
         alt,
         hasImageMap: Boolean(imageMap && Object.keys(imageMap).length > 0),
         imageMapKeys: imageMap ? Object.keys(imageMap) : [],
-        sampleDataUrl: resolved?.startsWith('data:') ? resolved.slice(0, 40) : resolved,
+        resolvedLength: typeof resolved === 'string' ? resolved.length : 0,
+        sampleDataUrl: resolved?.startsWith('data:') ? resolved.slice(0, 60) : resolved,
       });
 
       return (

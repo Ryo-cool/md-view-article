@@ -226,7 +226,12 @@ export async function fetchImage(relPath: string): Promise<string | null> {
     });
 
     // 画像取得成功をログ（本番でも Vercel ログで確認できる）
-    console.log('[fetchImage] ok', { relPath, branch: BRANCH });
+    console.log('[fetchImage] ok', { relPath, branch: BRANCH, size: data.content?.length ?? 0 });
+
+    if (!data.content) {
+      console.warn('[fetchImage] empty content', { relPath, branch: BRANCH });
+      return null;
+    }
 
     // 画像のMIMEタイプを拡張子から判定
     const ext = relPath.split('.').pop()?.toLowerCase() || '';
