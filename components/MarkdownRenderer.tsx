@@ -38,12 +38,24 @@ export default function MarkdownRenderer({ content, imageMap }: MarkdownRenderer
   const components: Components = {
     ...markdownComponents,
     img: ({ src, alt, ...props }: ImgProps) => (
-      <img
-        src={resolveImg(src) ?? ''}
-        alt={alt}
-        className="max-w-full h-auto my-4 rounded-lg"
-        {...props}
-      />
+      (() => {
+        const resolved = resolveImg(src) ?? '';
+        // 画像解決のデバッグログ（本番でも確認可能）
+        console.log('[MarkdownRenderer img]', {
+          originalSrc: src,
+          resolvedSrc: resolved,
+          alt,
+          hasImageMap: Boolean(imageMap && Object.keys(imageMap).length > 0),
+        });
+        return (
+          <img
+            src={resolved}
+            alt={alt}
+            className="max-w-full h-auto my-4 rounded-lg"
+            {...props}
+          />
+        );
+      })()
     ),
   };
 
