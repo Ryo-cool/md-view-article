@@ -22,24 +22,41 @@ type ImgProps = React.ImgHTMLAttributes<HTMLImageElement> & { src?: string | Blo
 export default function MarkdownRenderer({ content, imageMap }: MarkdownRendererProps) {
   // data URL などに置き換えるための resolver
   const resolveImg = (src: string | Blob | undefined) => {
-    if (src instanceof Blob) {
-      return URL.createObjectURL(src);
-    }
+    if (src instanceof Blob) return URL.createObjectURL(src);
     if (typeof src !== 'string') return src;
 
-    const candidates = [
-      src,
-      src.replace(/^\/+/, ''), // 先頭スラッシュ除去
-      src.startsWith('/') ? src : `/${src}`,
-      decodeURIComponent(src).replace(/^\/+/, ''),
-      decodeURIComponent(src).startsWith('/') ? decodeURIComponent(src) : `/${decodeURIComponent(src)}`,
-    ];
+    const decode = (s: string) => {
+      try {
+        return decodeURIComponent(s);
+      } catch {
+        return s;
+      }
+    };
 
-    for (const c of candidates) {
-      if (imageMap?.[c]) return imageMap[c];
-    }
+    const variants = (s: string) => {
+      const d = decode(s);
+      return [
+        s,
+        s.replace(/^\/+/, ''),
+        s.startsWith('/') ? s : `/${s}`,
+        d,
+        d.replace(/^\/+/, ''),
+        d.startsWith('/') ? d : `/${d}`,
+      ];
+    };
 
-    return src;
+    const tryMatch = (s: string): string | undefined => {
+      for (const v of variants(s)) {
+        if (imageMap?.[v]) return imageMap[v];
+      }
+      return undefined;
+    };
+
+    // まず src でマッチ
+    const bySrc = tryMatch(src);
+    if (bySrc) return bySrc;
+
+    return src; // マッチしなければ元のsrcのまま
   };
 
   const components: Components = {
@@ -60,11 +77,9 @@ export default function MarkdownRenderer({ content, imageMap }: MarkdownRenderer
         return undefined;
       };
 
-      let resolved = resolveImg(src) ?? findByAlt(alt) ?? '';
-      // 解決できなくても元のパスを残しておく（プロキシルートやpublic配信に任せる）
-      if (!resolved && typeof src === 'string') {
-        resolved = src;
-      }
+      const bySrc = resolveImg(src);
+      const byAlt = findByAlt(alt);
+      const resolved = (bySrc && typeof bySrc === 'string' ? bySrc : undefined) ?? byAlt ?? (typeof src === 'string' ? src : '');
 
       // 画像解決のデバッグログ（本番でも確認可能）
       console.log('[MarkdownRenderer img]', {
