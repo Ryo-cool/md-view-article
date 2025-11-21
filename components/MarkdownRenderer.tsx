@@ -22,7 +22,14 @@ type ImgProps = React.ImgHTMLAttributes<HTMLImageElement> & { src?: string | Blo
 export default function MarkdownRenderer({ content, imageMap }: MarkdownRendererProps) {
   // data URL などに置き換えるための resolver
   const resolveImg = (src: string | Blob | undefined) => {
-    if (!src) return src;
+    if (!src) {
+      // src が空の場合、imageMap に単一エントリがあればそれを返す
+      if (imageMap && Object.keys(imageMap).length === 1) {
+        const only = Object.values(imageMap)[0];
+        return only;
+      }
+      return src;
+    }
     if (typeof src === 'string') {
       if (imageMap?.[src]) return imageMap[src];
       if (src.startsWith('/') && imageMap?.[src.substring(1)]) return imageMap[src.substring(1)];
