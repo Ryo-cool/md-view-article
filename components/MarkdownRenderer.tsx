@@ -61,7 +61,11 @@ export default function MarkdownRenderer({ content, imageMap }: MarkdownRenderer
       };
 
       let resolved = resolveImg(src) ?? findByAlt(alt) ?? '';
-      // 最後のフォールバック: 何もヒットしなければ imageMap の先頭を使う
+      // 最後のフォールバック: 何もヒットしなければ /images/... を proxy ルートに流す
+      if (!resolved && typeof src === 'string' && src.startsWith('/images/')) {
+        resolved = src; // /images/ は app/images/[...path]/route.ts で GitHub から配信する
+      }
+      // imageMap があるなら先頭を最終手段として使う
       if (!resolved && imageMap && Object.keys(imageMap).length > 0) {
         resolved = imageMap[Object.keys(imageMap)[0]];
       }
