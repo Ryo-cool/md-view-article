@@ -1,9 +1,12 @@
 import { fetchImage } from '@/lib/content';
+import type { NextRequest } from 'next/server';
 
 export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
 
-export async function GET(_req: Request, ctx: { params: { path: string[] } }) {
-  const relPath = ctx.params.path.join('/');
+export async function GET(_req: NextRequest, ctx: { params: Promise<{ path: string[] }> | { path: string[] } }) {
+  const params = await Promise.resolve(ctx.params);
+  const relPath = params.path.join('/');
 
   try {
     const dataUrl = await fetchImage(relPath);
