@@ -211,7 +211,12 @@ export async function fetchMarkdown(relPath: string): Promise<string> {
     headers: { Authorization: `Bearer ${TOKEN}` },
   });
 
-  const buff = Buffer.from(data.content, 'base64');
+  const base64 = (data.content || '').replace(/\s+/g, '');
+  if (!base64) {
+    throw new Error(`Markdown content is empty: ${relPath}`);
+  }
+
+  const buff = Buffer.from(base64, 'base64');
   return buff.toString('utf8');
 }
 
