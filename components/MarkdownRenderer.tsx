@@ -2,6 +2,8 @@
 
 /* eslint-disable @next/next/no-img-element */
 import ReactMarkdown from 'react-markdown';
+import type React from 'react';
+import type { Components } from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import remarkBreaks from 'remark-breaks';
 import rehypeRaw from 'rehype-raw';

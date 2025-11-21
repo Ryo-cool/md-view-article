@@ -5,6 +5,8 @@
   --foreground: #2c3e50;
   --neu-light: #ffffff;
   --neu-dark: rgba(163, 177, 198, 0.6);
+  --font-geist-sans: "Inter", "Helvetica Neue", Arial, sans-serif;
+  --font-geist-mono: "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace;
 }
 
 @theme inline {
