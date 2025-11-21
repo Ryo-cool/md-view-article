@@ -60,7 +60,11 @@ export default function MarkdownRenderer({ content, imageMap }: MarkdownRenderer
         return undefined;
       };
 
-      const resolved = resolveImg(src) ?? findByAlt(alt) ?? '';
+      let resolved = resolveImg(src) ?? findByAlt(alt) ?? '';
+      // 最後のフォールバック: 何もヒットしなければ imageMap の先頭を使う
+      if (!resolved && imageMap && Object.keys(imageMap).length > 0) {
+        resolved = imageMap[Object.keys(imageMap)[0]];
+      }
 
       // 画像解決のデバッグログ（本番でも確認可能）
       console.log('[MarkdownRenderer img]', {
@@ -68,6 +72,8 @@ export default function MarkdownRenderer({ content, imageMap }: MarkdownRenderer
         resolvedSrc: resolved,
         alt,
         hasImageMap: Boolean(imageMap && Object.keys(imageMap).length > 0),
+        imageMapKeys: imageMap ? Object.keys(imageMap) : [],
+        sampleDataUrl: resolved?.startsWith('data:') ? resolved.slice(0, 40) : resolved,
       });
 
       return (
