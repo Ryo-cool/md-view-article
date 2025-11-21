@@ -190,6 +190,15 @@ export default async function DocPage({
     }
   });
 
+  // デバッグ: 画像置換結果をサーバーログに出力
+  console.log('[DocPage images]', {
+    slug: resolvedParams.slug,
+    keys: Array.from(imageMap.keys()),
+    mapped: Object.keys(imageMapObject),
+    hasDataUrl: processedContent.includes('data:image'),
+    sample: processedContent.slice(0, 200),
+  });
+
   return (
     <main className="min-h-screen" style={{ background: '#e0e5ec' }}>
       <div className="max-w-4xl mx-auto px-6 py-12">

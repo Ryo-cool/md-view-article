@@ -44,26 +44,41 @@ export default function MarkdownRenderer({ content, imageMap }: MarkdownRenderer
 
   const components: Components = {
     ...markdownComponents,
-    img: ({ src, alt, ...props }: ImgProps) => (
-      (() => {
-        const resolved = resolveImg(src) ?? '';
-        // 画像解決のデバッグログ（本番でも確認可能）
-        console.log('[MarkdownRenderer img]', {
-          originalSrc: src,
-          resolvedSrc: resolved,
-          alt,
-          hasImageMap: Boolean(imageMap && Object.keys(imageMap).length > 0),
-        });
-        return (
-          <img
-            src={resolved}
-            alt={alt}
-            className="max-w-full h-auto my-4 rounded-lg"
-            {...props}
-          />
-        );
-      })()
-    ),
+    img: ({ src, alt, ...props }: ImgProps) => {
+      // alt から imageMap を推測してヒットさせる
+      const findByAlt = (altText?: string): string | undefined => {
+        if (!altText || !imageMap) return undefined;
+        const normalize = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, '');
+        const altNorm = normalize(altText);
+        for (const [key, val] of Object.entries(imageMap)) {
+          const file = key.split('/').pop() ?? key;
+          const stem = file.split('.').slice(0, -1).join('.') || file;
+          if (normalize(stem).includes(altNorm) || altNorm.includes(normalize(stem))) {
+            return val;
+          }
+        }
+        return undefined;
+      };
+
+      const resolved = resolveImg(src) ?? findByAlt(alt) ?? '';
+
+      // 画像解決のデバッグログ（本番でも確認可能）
+      console.log('[MarkdownRenderer img]', {
+        originalSrc: src,
+        resolvedSrc: resolved,
+        alt,
+        hasImageMap: Boolean(imageMap && Object.keys(imageMap).length > 0),
+      });
+
+      return (
+        <img
+          src={resolved}
+          alt={alt}
+          className="max-w-full h-auto my-4 rounded-lg"
+          {...props}
+        />
+      );
+    },
   };
 
   return (
