@@ -15,7 +15,7 @@ interface MarkdownRendererProps {
   imageMap?: Record<string, string>;
 }
 
-type ImgProps = React.ImgHTMLAttributes<HTMLImageElement> & { src?: string; alt?: string };
+type ImgProps = React.ImgHTMLAttributes<HTMLImageElement> & { src?: string | Blob; alt?: string };
 
 export default function MarkdownRenderer({ content, imageMap }: MarkdownRendererProps) {
   // data URL などに置き換えるための resolver
@@ -26,11 +26,11 @@ export default function MarkdownRenderer({ content, imageMap }: MarkdownRenderer
     return src;
   };
 
-  const components = {
+  const components: Components = {
     ...markdownComponents,
     img: ({ src, alt, ...props }: ImgProps) => (
       <img
-        src={resolveImg(src) ?? ''}
+        src={resolveImg(typeof src === 'string' ? src : undefined) ?? ''}
         alt={alt}
         className="max-w-full h-auto my-4 rounded-lg"
         {...props}
