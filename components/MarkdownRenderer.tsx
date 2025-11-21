@@ -17,7 +17,7 @@ interface MarkdownRendererProps {
   imageMap?: Record<string, string>;
 }
 
-type ImgProps = React.ImgHTMLAttributes<HTMLImageElement> & { src?: string | Blob; alt?: string };
+type ImgProps = React.ImgHTMLAttributes<HTMLImageElement>;
 
 export default function MarkdownRenderer({ content, imageMap }: MarkdownRendererProps) {
   // data URL などに置き換えるための resolver
