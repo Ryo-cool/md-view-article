@@ -385,6 +385,12 @@ export default async function DocPage({
     const imageSrc = match[2];
     if (!imageSrc.startsWith('http://') && !imageSrc.startsWith('https://')) {
       const resolvedPath = resolveImagePath(imageSrc);
+      // 画像パス解決のログ（本番でも確認できる）
+      console.log('[image] resolved', {
+        slug: resolvedParams.slug,
+        original: imageSrc,
+        resolved: resolvedPath,
+      });
       if (!imageMap.has(imageSrc)) {
         const imageData = await fetchImage(resolvedPath);
         imageMap.set(imageSrc, imageData);
@@ -425,4 +431,3 @@ export default async function DocPage({
     </main>
   );
 }
-

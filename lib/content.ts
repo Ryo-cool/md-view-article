@@ -225,6 +225,9 @@ export async function fetchImage(relPath: string): Promise<string | null> {
       headers: { Authorization: `Bearer ${TOKEN}` },
     });
 
+    // 画像取得成功をログ（本番でも Vercel ログで確認できる）
+    console.log('[fetchImage] ok', { relPath, branch: BRANCH });
+
     // 画像のMIMEタイプを拡張子から判定
     const ext = relPath.split('.').pop()?.toLowerCase() || '';
     const mimeTypes: Record<string, string> = {
@@ -244,10 +247,10 @@ export async function fetchImage(relPath: string): Promise<string | null> {
     const err = error as { status?: number; message?: string };
     if (err?.status === 404) {
       // 画像が見つからない場合はnullを返す
+      console.warn('[fetchImage] 404', { relPath, branch: BRANCH });
       return null;
     }
-    console.error(`画像の取得に失敗しました: ${relPath}`, error);
+    console.error('[fetchImage] fail', { relPath, branch: BRANCH, error });
     return null;
   }
 }
-
