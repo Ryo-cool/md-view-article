@@ -22,24 +22,24 @@ type ImgProps = React.ImgHTMLAttributes<HTMLImageElement> & { src?: string | Blo
 export default function MarkdownRenderer({ content, imageMap }: MarkdownRendererProps) {
   // data URL などに置き換えるための resolver
   const resolveImg = (src: string | Blob | undefined) => {
-    if (!src) {
-      // src が空の場合、imageMap に単一エントリがあればそれを返す
-      if (imageMap && Object.keys(imageMap).length === 1) {
-        const only = Object.values(imageMap)[0];
-        return only;
-      }
-      return src;
-    }
-    if (typeof src === 'string') {
-      if (imageMap?.[src]) return imageMap[src];
-      if (src.startsWith('/') && imageMap?.[src.substring(1)]) return imageMap[src.substring(1)];
-      return src;
-    }
-    // Blob が来た場合は一時URLを返す
     if (src instanceof Blob) {
       return URL.createObjectURL(src);
     }
-    return String(src);
+    if (typeof src !== 'string') return src;
+
+    const candidates = [
+      src,
+      src.replace(/^\/+/, ''), // 先頭スラッシュ除去
+      src.startsWith('/') ? src : `/${src}`,
+      decodeURIComponent(src).replace(/^\/+/, ''),
+      decodeURIComponent(src).startsWith('/') ? decodeURIComponent(src) : `/${decodeURIComponent(src)}`,
+    ];
+
+    for (const c of candidates) {
+      if (imageMap?.[c]) return imageMap[c];
+    }
+
+    return src;
   };
 
   const components: Components = {
@@ -61,13 +61,9 @@ export default function MarkdownRenderer({ content, imageMap }: MarkdownRenderer
       };
 
       let resolved = resolveImg(src) ?? findByAlt(alt) ?? '';
-      // 最後のフォールバック: 何もヒットしなければ /images/... を proxy ルートに流す
-      if (!resolved && typeof src === 'string' && src.startsWith('/images/')) {
-        resolved = src; // /images/ は app/images/[...path]/route.ts で GitHub から配信する
-      }
-      // imageMap があるなら先頭を最終手段として使う
-      if (!resolved && imageMap && Object.keys(imageMap).length > 0) {
-        resolved = imageMap[Object.keys(imageMap)[0]];
+      // 解決できなくても元のパスを残しておく（プロキシルートやpublic配信に任せる）
+      if (!resolved && typeof src === 'string') {
+        resolved = src;
       }
 
       // 画像解決のデバッグログ（本番でも確認可能）
