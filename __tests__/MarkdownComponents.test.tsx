@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable react/no-unescaped-entities */
 import { render, screen } from '@testing-library/react';
 import { markdownComponents } from '@/lib/markdownComponents';
 
@@ -217,3 +219,5 @@ describe('Markdown Custom Components', () => {
     });
   });
 });
+ 
+ 

@@ -1,3 +1,4 @@
+/* eslint-disable import/no-anonymous-default-export */
 // Mock for mermaid library
 export default {
   initialize: jest.fn(),

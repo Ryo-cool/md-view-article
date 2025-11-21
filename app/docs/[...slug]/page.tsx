@@ -177,13 +177,14 @@ export default async function DocPage({
     }
   }
 
-  // 画像パスをデータURLに置き換えたコンテンツを作成
+  // 画像パスをデータURLに置き換えたコンテンツを作成し、クライアント側でも解決できるようマップを渡す
   let processedContent = content;
+  const imageMapObject: Record<string, string> = {};
   imageMap.forEach((dataUrl, originalSrc) => {
     if (dataUrl) {
-      // 画像パスをデータURLに置き換え
+      imageMapObject[originalSrc] = dataUrl;
       processedContent = processedContent.replace(
-        new RegExp(`!\\[([^\\]]*)\\]\\(${originalSrc.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\)`, 'g'),
+        new RegExp('!\\[([^\\]]*)\\]\\(' + originalSrc.replace(/[.*+?^${}()|[\\]\\]/g, '\\$&') + '\\)', 'g'),
         `![$1](${dataUrl})`
       );
     }
@@ -193,7 +194,7 @@ export default async function DocPage({
     <main className="min-h-screen" style={{ background: '#e0e5ec' }}>
       <div className="max-w-4xl mx-auto px-6 py-12">
         <article className="neu-card p-8 md:p-12">
-          <MarkdownRenderer content={processedContent} />
+          <MarkdownRenderer content={processedContent} imageMap={imageMapObject} />
         </article>
       </div>
     </main>
