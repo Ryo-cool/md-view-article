@@ -34,8 +34,10 @@ interface GitHubTree {
 }
 
 interface GitHubContent {
-  content: string;
-  encoding: string;
+  content?: string | null;
+  encoding?: string;
+  download_url?: string | null;
+  size?: number;
 }
 
 async function getHeadSha(): Promise<string> {
@@ -225,10 +227,22 @@ export async function fetchImage(relPath: string): Promise<string | null> {
       headers: { Authorization: `Bearer ${TOKEN}` },
     });
 
-    const base64 = (data.content || '').replace(/\s+/g, ''); // GitHub APIのbase64には改行が混じることがあるので除去
+    // GitHub Contents APIは1MB超でcontentがnullになるので、download_url経由で再取得する
+    let base64 = (data.content || '').replace(/\s+/g, '');
+    if (!base64 && data.download_url) {
+      const buffer = await ofetch<ArrayBuffer>(data.download_url, {
+        responseType: 'arrayBuffer',
+      });
+      base64 = Buffer.from(buffer).toString('base64');
+    }
 
     // 画像取得成功をログ（本番でも Vercel ログで確認できる）
-    console.log('[fetchImage] ok', { relPath, branch: BRANCH, size: base64.length });
+    console.log('[fetchImage] ok', {
+      relPath,
+      branch: BRANCH,
+      size: base64.length,
+      via: data.content ? 'content' : 'download_url',
+    });
 
     if (!base64) {
       console.warn('[fetchImage] empty content', { relPath, branch: BRANCH });
