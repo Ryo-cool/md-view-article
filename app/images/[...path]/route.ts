@@ -6,7 +6,8 @@ export const runtime = 'nodejs';
 
 export async function GET(_req: NextRequest, ctx: { params: Promise<{ path: string[] }> | { path: string[] } }) {
   const params = await Promise.resolve(ctx.params);
-  const relPath = params.path.join('/');
+  const joined = params.path.join('/');
+  const relPath = joined.startsWith('images/') ? joined : `images/${joined}`;
 
   try {
     const dataUrl = await fetchImage(relPath);
