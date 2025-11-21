@@ -225,10 +225,12 @@ export async function fetchImage(relPath: string): Promise<string | null> {
       headers: { Authorization: `Bearer ${TOKEN}` },
     });
 
-    // 画像取得成功をログ（本番でも Vercel ログで確認できる）
-    console.log('[fetchImage] ok', { relPath, branch: BRANCH, size: data.content?.length ?? 0 });
+    const base64 = (data.content || '').replace(/\s+/g, ''); // GitHub APIのbase64には改行が混じることがあるので除去
 
-    if (!data.content) {
+    // 画像取得成功をログ（本番でも Vercel ログで確認できる）
+    console.log('[fetchImage] ok', { relPath, branch: BRANCH, size: base64.length });
+
+    if (!base64) {
       console.warn('[fetchImage] empty content', { relPath, branch: BRANCH });
       return null;
     }
@@ -247,7 +249,7 @@ export async function fetchImage(relPath: string): Promise<string | null> {
     const mimeType = mimeTypes[ext] || 'image/png';
 
     // Base64データURLを構築
-    return `data:${mimeType};base64,${data.content}`;
+    return `data:${mimeType};base64,${base64}`;
   } catch (error: unknown) {
     const err = error as { status?: number; message?: string };
     if (err?.status === 404) {
