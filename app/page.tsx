@@ -1,89 +1,118 @@
 import Link from "next/link";
+import dynamic from "next/dynamic";
+import FadeIn from "@/components/FadeIn";
+import VideoScrub from "@/components/VideoScrub";
 
-// TODO: 認証機能が必要な場合、以下を有効化
-// import { getServerSession } from 'next-auth';
-// import { authOptions } from '@/lib/auth';
+// ThreeBackgroundはSSR不可なのでdynamic import
+const ThreeBackground = dynamic(() => import("@/components/ThreeBackground"), {
+  ssr: false,
+});
 
 export default function Home() {
-  // TODO: 認証機能が必要な場合、以下を有効化
-  // const session = await getServerSession(authOptions);
   return (
-    <main className="flex-1" style={{ background: '#e0e5ec' }}>
-      <div className="max-w-6xl mx-auto px-6 py-20 md:py-32">
-        <div className="text-center">
-          {/* Hero Section */}
-          <div className="mb-12">
-            <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight" style={{ color: '#2c3e50' }}>
-              📚 Markdown View Article
-            </h1>
-            <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto leading-relaxed" style={{ color: '#5a6c7d' }}>
-              GitHub リポジトリから Markdown ファイルを取得し、<br />
-              美しい静的サイトとして配信します
-            </p>
-            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-              <Link
-                href="/docs"
-                className="neu-button inline-flex items-center justify-center px-10 py-4 font-bold text-lg"
-                style={{ color: '#2c3e50' }}
-              >
-                📖 ドキュメント一覧を見る
-              </Link>
-              <a
-                href="https://github.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="neu-button inline-flex items-center justify-center px-10 py-4 font-bold text-lg"
-                style={{ color: '#2c3e50' }}
-              >
-                <svg
-                  className="w-5 h-5 mr-2"
-                  fill="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                GitHub で見る
-              </a>
-            </div>
-          </div>
+    <main className="flex-1 relative min-h-screen overflow-x-hidden bg-[#050510] text-white">
+      {/* 背景 */}
+      <ThreeBackground />
+      
+      {/* スクロールコンテンツ */}
+      <div className="relative z-10">
+        <div className="max-w-6xl mx-auto px-6 py-20 md:py-32">
+          <div className="text-center">
+            {/* Hero Section */}
+            <FadeIn>
+              <div className="mb-20">
+                <h1 className="text-6xl md:text-8xl font-bold mb-6 leading-tight tracking-tight">
+                  <span className="bg-clip-text text-transparent bg-linear-to-r from-blue-400 via-cyan-300 to-blue-500 drop-shadow-[0_0_15px_rgba(50,150,255,0.6)]">
+                    Markdown
+                  </span>
+                  <br />
+                  View Article
+                </h1>
+                <p className="text-xl md:text-2xl mb-12 max-w-3xl mx-auto leading-relaxed text-gray-300 font-light">
+                  GitHub リポジトリから Markdown ファイルを取得し、
+                  <br />
+                  <span className="text-cyan-300 font-semibold drop-shadow-[0_0_8px_rgba(100,255,255,0.4)]">美しい静的サイト</span>として配信します
+                </p>
+                
+                <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+                  <Link
+                    href="/docs"
+                    className="group relative inline-flex items-center justify-center px-12 py-4 text-lg font-bold overflow-hidden rounded-full bg-gray-800/40 border border-white/10 backdrop-blur-sm transition-all duration-300 hover:bg-gray-700/50 hover:scale-105 hover:shadow-[0_0_20px_rgba(50,150,255,0.3)] hover:border-blue-400/50"
+                  >
+                    <span className="bg-clip-text text-transparent bg-linear-to-r from-blue-200 to-white">
+                      📖 ドキュメント一覧を見る
+                    </span>
+                  </Link>
+                  
+                  <a
+                    href="https://github.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group relative inline-flex items-center justify-center px-12 py-4 text-lg font-bold overflow-hidden rounded-full bg-gray-800/40 border border-white/10 backdrop-blur-sm transition-all duration-300 hover:bg-gray-700/50 hover:scale-105 hover:border-white/30"
+                  >
+                    <svg
+                      className="w-6 h-6 mr-2 text-white"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                    <span className="text-white">GitHub で見る</span>
+                  </a>
+                </div>
+              </div>
+            </FadeIn>
 
-          {/* Features Section */}
-          <div className="mt-24 grid md:grid-cols-3 gap-8 text-left">
-            <div className="neu-card p-8">
-              <div className="text-4xl mb-4">🚀</div>
-              <h3 className="text-xl font-bold mb-3" style={{ color: '#2c3e50' }}>
-                高速な静的サイト
-              </h3>
-              <p style={{ color: '#5a6c7d' }}>
-                Next.js の SSG を使用し、ビルド時に全ページを生成。読み込み速度が高速です。
-              </p>
-            </div>
+            {/* Features Section */}
+            <div className="mt-32 grid md:grid-cols-3 gap-8 text-left">
+              <FadeIn delay={0.2}>
+                <div className="group p-8 rounded-2xl bg-white/5 border border-white/5 backdrop-blur-md hover:bg-white/10 hover:border-blue-500/30 transition-all duration-300 hover:-translate-y-2 shadow-lg hover:shadow-blue-500/20">
+                  <div className="text-5xl mb-6 transform group-hover:scale-110 transition-transform duration-300">🚀</div>
+                  <h3 className="text-2xl font-bold mb-4 text-white group-hover:text-blue-300 transition-colors">
+                    高速な静的サイト
+                  </h3>
+                  <p className="text-gray-400 leading-relaxed group-hover:text-gray-300 transition-colors">
+                    Next.js の <span className="text-blue-300 font-medium">SSG</span> を使用し、ビルド時に全ページを生成。読み込み速度が高速です。
+                  </p>
+                </div>
+              </FadeIn>
 
-            <div className="neu-card p-8">
-              <div className="text-4xl mb-4">📝</div>
-              <h3 className="text-xl font-bold mb-3" style={{ color: '#2c3e50' }}>
-                Markdown & Mermaid 対応
-              </h3>
-              <p style={{ color: '#5a6c7d' }}>
-                GitHub Flavored Markdown、Mermaid 図、アラートブロックをサポート。
-              </p>
-            </div>
+              <FadeIn delay={0.4}>
+                <div className="group p-8 rounded-2xl bg-white/5 border border-white/5 backdrop-blur-md hover:bg-white/10 hover:border-purple-500/30 transition-all duration-300 hover:-translate-y-2 shadow-lg hover:shadow-purple-500/20">
+                  <div className="text-5xl mb-6 transform group-hover:scale-110 transition-transform duration-300">📝</div>
+                  <h3 className="text-2xl font-bold mb-4 text-white group-hover:text-purple-300 transition-colors">
+                    Markdown & Mermaid
+                  </h3>
+                  <p className="text-gray-400 leading-relaxed group-hover:text-gray-300 transition-colors">
+                    GitHub Flavored Markdown、<span className="text-purple-300 font-medium">Mermaid 図</span>、アラートブロックを完全サポート。
+                  </p>
+                </div>
+              </FadeIn>
 
-            <div className="neu-card p-8">
-              <div className="text-4xl mb-4">🔄</div>
-              <h3 className="text-xl font-bold mb-3" style={{ color: '#2c3e50' }}>
-                自動デプロイ
-              </h3>
-              <p style={{ color: '#5a6c7d' }}>
-                GitHub リポジトリの変更を検知し、Vercel Deploy Hook で自動反映。
-              </p>
+              <FadeIn delay={0.6}>
+                <div className="group p-8 rounded-2xl bg-white/5 border border-white/5 backdrop-blur-md hover:bg-white/10 hover:border-green-500/30 transition-all duration-300 hover:-translate-y-2 shadow-lg hover:shadow-green-500/20">
+                  <div className="text-5xl mb-6 transform group-hover:scale-110 transition-transform duration-300">🔄</div>
+                  <h3 className="text-2xl font-bold mb-4 text-white group-hover:text-green-300 transition-colors">
+                    自動デプロイ
+                  </h3>
+                  <p className="text-gray-400 leading-relaxed group-hover:text-gray-300 transition-colors">
+                    GitHub リポジトリの変更を検知し、Vercel Deploy Hook で<span className="text-green-300 font-medium">自動反映</span>します。
+                  </p>
+                </div>
+              </FadeIn>
             </div>
           </div>
         </div>
+
+        {/* Video Scrubbing Section */}
+        <VideoScrub />
+        
+        {/* 余白調整用 */}
+        <div className="h-32"></div>
       </div>
     </main>
   );
