@@ -29,20 +29,21 @@ export default function VideoScrub() {
       const rect = container.getBoundingClientRect();
       const windowHeight = window.innerHeight;
       
-      // コンテナが画面内に入り始めてから抜け終わるまでの範囲での進行度を計算する
-      // ただし、Scrubbingなので、stickyされている期間（コンテナの上端が画面上端に到達してから、下端が画面上端に到達するまで）を基準にするのが一般的
-      // ここでは簡易的に、コンテナが見えている範囲で計算する
-      
       // コンテナの高さ
       const containerHeight = rect.height;
-      // スクロール可能な距離 (コンテナの高さ - 画面の高さ)
-      const scrollableDistance = containerHeight - windowHeight;
       
-      // 現在のスクロール位置 (コンテナの上端が画面上端からどれくらい上にあるか = -rect.top)
-      // sticky開始位置は rect.top = 0
-      const scrolled = -rect.top;
+      // 動画を開始するタイミングを早める: コンテナの上端が画面の下端に到達した時点から開始
+      // オフセットを追加して、より早いタイミングで動画が始まるようにする
+      const startOffset = windowHeight * 0.5; // 画面の半分下から開始（調整可能）
+      const startPoint = windowHeight + startOffset; // コンテナの上端がこの位置に来たら動画開始
       
-      if (scrollableDistance > 0) {
+      // スクロール可能な距離を拡張（開始が早くなる分、終了も早くなる）
+      const scrollableDistance = containerHeight - windowHeight + startOffset;
+      
+      // 現在のスクロール位置（コンテナの上端が画面上端からどれくらい上にあるか）
+      const scrolled = startPoint - rect.top;
+      
+      if (scrollableDistance > 0 && scrolled >= 0) {
         // 進行度 (0.0 〜 1.0)
         let progress = scrolled / scrollableDistance;
         progress = Math.max(0, Math.min(1, progress));
@@ -51,6 +52,9 @@ export default function VideoScrub() {
         if (videoRef.current) {
           videoRef.current.currentTime = progress * duration;
         }
+      } else if (scrolled < 0 && videoRef.current) {
+        // 開始前は0秒に設定
+        videoRef.current.currentTime = 0;
       }
     };
 
