@@ -1,4 +1,5 @@
 import type { Components } from 'react-markdown';
+import type { ReactElement } from 'react';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { oneLight } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import Mermaid from '@/components/Mermaid';
@@ -93,26 +94,29 @@ export const markdownComponents: Components = {
       {children}
     </td>
   ),
-  code({ inline, className, children, ...props }: any) {
-    const match = /language-(\w+)/.exec(className || '');
+  pre: ({ children, ...props }: any) => {
+    const child = Array.isArray(children) ? (children[0] as ReactElement) : (children as ReactElement);
+    const childProps = (child?.props ?? {}) as {
+      className?: string;
+      children?: string | string[] | ReactElement;
+    };
+    const className = childProps.className ?? '';
+    const match = /language-(\w+)/.exec(className);
     const language = match && match[1];
+    const rawChildren = childProps.children;
+    const codeContent =
+      typeof rawChildren === 'string'
+        ? rawChildren
+        : Array.isArray(rawChildren)
+          ? rawChildren.join('')
+          : rawChildren
+            ? String(rawChildren)
+            : '';
 
-    if (!inline && language === 'mermaid') {
-      return <Mermaid chart={String(children).replace(/\n$/, '')} />;
+    if (language === 'mermaid') {
+      return <Mermaid chart={codeContent.trim()} />;
     }
 
-    if (inline) {
-      return (
-        <code className="neu-pressed px-2 py-1 rounded text-sm font-mono" style={{
-          color: '#c7254e',
-          display: 'inline-block'
-        }} {...props}>
-          {children}
-        </code>
-      );
-    }
-
-    // コードブロックにシンタックスハイライトを適用
     return (
       <SyntaxHighlighter
         language={language || 'text'}
@@ -128,13 +132,36 @@ export const markdownComponents: Components = {
         PreTag="pre"
         codeTagProps={{
           style: {
-            fontFamily: 'var(--font-geist-mono), "Fira Code", "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", Consolas, "Courier New", monospace',
+            fontFamily:
+              'var(--font-geist-mono), "Fira Code", "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", Consolas, "Courier New", monospace',
           },
         }}
         {...props}
       >
-        {String(children).replace(/\n$/, '')}
+        {codeContent.replace(/\n$/, '')}
       </SyntaxHighlighter>
+    );
+  },
+  code({ inline, className, children, ...props }: any) {
+    const isInline = typeof inline === 'boolean' ? inline : true;
+    if (!isInline) {
+      return (
+        <code className={className} {...props}>
+          {children}
+        </code>
+      );
+    }
+    return (
+      <code
+        className="neu-pressed px-2 py-1 rounded text-sm font-mono"
+        style={{
+          color: '#c7254e',
+          display: 'inline-block',
+        }}
+        {...props}
+      >
+        {children}
+      </code>
     );
   },
   a({ href, children, ...props }: any) {
