@@ -9,6 +9,7 @@ import remarkBreaks from 'remark-breaks';
 import rehypeRaw from 'rehype-raw';
 import * as rehypeGithubAlertsModule from 'rehype-github-alerts';
 import { markdownComponents } from '@/lib/markdownComponents';
+import { remarkStrongFallback } from '@/lib/remarkStrongFallback';
 
 const rehypeGithubAlerts = rehypeGithubAlertsModule.rehypeGithubAlerts;
 
@@ -106,7 +107,7 @@ export default function MarkdownRenderer({ content, imageMap }: MarkdownRenderer
   return (
     <ReactMarkdown
       components={components}
-      remarkPlugins={[remarkGfm, remarkBreaks]}
+      remarkPlugins={[remarkGfm, remarkBreaks, remarkStrongFallback]}
       rehypePlugins={[rehypeGithubAlerts, rehypeRaw]}
     >
       {content}

@@ -114,28 +114,27 @@ export const markdownComponents: Components = {
 
     // コードブロックにシンタックスハイライトを適用
     return (
-      <div className="my-4 neu-pressed p-4 overflow-hidden">
-        <SyntaxHighlighter
-          language={language || 'text'}
-          style={oneLight}
-          customStyle={{
-            margin: 0,
-            padding: '1rem',
-            fontSize: '0.875rem',
-            lineHeight: '1.6',
-            background: 'transparent',
-          }}
-          PreTag="div"
-          codeTagProps={{
-            style: {
-              fontFamily: 'var(--font-geist-mono), "Fira Code", "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", Consolas, "Courier New", monospace',
-            },
-          }}
-          {...props}
-        >
-          {String(children).replace(/\n$/, '')}
-        </SyntaxHighlighter>
-      </div>
+      <SyntaxHighlighter
+        language={language || 'text'}
+        style={oneLight}
+        customStyle={{
+          margin: '1rem 0',
+          padding: '1rem',
+          fontSize: '0.875rem',
+          lineHeight: '1.6',
+          background: 'transparent',
+          borderRadius: '8px',
+        }}
+        PreTag="pre"
+        codeTagProps={{
+          style: {
+            fontFamily: 'var(--font-geist-mono), "Fira Code", "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", Consolas, "Courier New", monospace',
+          },
+        }}
+        {...props}
+      >
+        {String(children).replace(/\n$/, '')}
+      </SyntaxHighlighter>
     );
   },
   a({ href, children, ...props }: any) {
@@ -157,8 +156,7 @@ export const markdownComponents: Components = {
       className="font-bold"
       style={{
         fontWeight: 700,
-        color: '#2c3e50',
-        display: 'inline'
+        display: 'inline',
       }}
       {...props}
     >

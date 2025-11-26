@@ -17,7 +17,7 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-geist-sans);
+  font-family: var(--font-noto-sans-jp), var(--font-inter), 'Hiragino Sans', 'Yu Gothic', 'Meiryo', sans-serif;
 }
 
 /* GitHub Alerts - Dark Glass Style */
@@ -68,7 +68,8 @@ body {
 }
 
 /* Markdown Typography Overrides for Dark Mode */
-article strong {
+article strong,
+strong {
   font-weight: 700 !important;
   color: #fff !important;
 }
