@@ -67,6 +67,11 @@ body {
   border-radius: 12px;
 }
 
+/* Force Mermaid text color to override article styles */
+.mermaid, .mermaid * {
+  color: #f8fafc !important;
+}
+
 /* Markdown Typography Overrides for Dark Mode */
 article strong,
 strong {
