@@ -2,45 +2,32 @@ import Link from 'next/link';
 
 export default function Header() {
   return (
-    <header className="sticky top-0 z-50" style={{ background: '#e0e5ec' }}>
-      <div className="max-w-7xl mx-auto px-6 py-4">
-        <div className="neu-flat px-6 py-4 flex items-center justify-between">
-          <Link href="/" className="flex items-center space-x-2 group">
-            <span className="text-2xl">📚</span>
-            <span className="text-xl font-bold" style={{ color: '#2c3e50' }}>Markdown Docs</span>
+    <header className="sticky top-0 z-50 pt-4 pb-2">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="glass-card px-6 py-4 flex items-center justify-between bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-lg shadow-black/20">
+          <Link href="/" className="flex items-center space-x-3 group">
+            <span className="text-2xl filter drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]">📚</span>
+            <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 group-hover:to-blue-300 transition-all duration-300">
+              Markdown Docs
+            </span>
           </Link>
-          <nav className="flex items-center space-x-6">
+          <nav className="flex items-center space-x-4">
             <Link
               href="/docs"
-              className="neu-button px-5 py-2.5 font-medium transition-all"
-              style={{ color: '#2c3e50' }}
+              className="glass-button px-5 py-2.5 font-medium text-sm flex items-center gap-2 group"
             >
-              ドキュメント一覧
+              <span>ドキュメント一覧</span>
+              <span className="group-hover:translate-x-0.5 transition-transform">→</span>
             </Link>
-            {/* TODO: 認証機能が必要な場合、以下を有効化 */}
-            {/* {session ? (
-              <>
-                <span className="text-gray-600">{session.user.name}</span>
-                <button onClick={handleLogout} className="text-gray-600 hover:text-gray-900">
-                  ログアウト
-                </button>
-              </>
-            ) : (
-              <Link href="/login" className="text-gray-600 hover:text-gray-900">
-                ログイン
-              </Link>
-            )} */}
             <a
               href="https://github.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="neu-button p-2.5 inline-flex items-center justify-center transition-all"
+              className="glass-button p-2.5 inline-flex items-center justify-center group"
               aria-label="GitHub"
-              style={{ color: '#2c3e50' }}
             >
               <svg
-                className="w-6 h-6"
-                fill="currentColor"
+                className="w-5 h-5 fill-current group-hover:scale-110 transition-transform"
                 viewBox="0 0 24 24"
                 aria-hidden="true"
               >

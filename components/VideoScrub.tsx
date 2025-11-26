@@ -10,12 +10,22 @@ export default function VideoScrub() {
   useEffect(() => {
     const video = videoRef.current;
     if (video) {
-      // メタデータ読み込み完了時にdurationを設定
-      video.onloadedmetadata = () => {
+      console.log('VideoScrub: Video element found');
+      
+      const setVideoDuration = () => {
         if (!isNaN(video.duration)) {
+          console.log('VideoScrub: Duration set', video.duration);
           setDuration(video.duration);
         }
       };
+
+      if (video.readyState >= 1) {
+        console.log('VideoScrub: Video already loaded');
+        setVideoDuration();
+      } else {
+        console.log('VideoScrub: Waiting for metadata');
+        video.onloadedmetadata = setVideoDuration;
+      }
     }
   }, []);
 
@@ -32,29 +42,27 @@ export default function VideoScrub() {
       // コンテナの高さ
       const containerHeight = rect.height;
       
-      // 動画を開始するタイミングを早める: コンテナの上端が画面の下端に到達した時点から開始
-      // オフセットを追加して、より早いタイミングで動画が始まるようにする
-      const startOffset = windowHeight * 0.5; // 画面の半分下から開始（調整可能）
-      const startPoint = windowHeight + startOffset; // コンテナの上端がこの位置に来たら動画開始
+      // スクロール計算: コンテナが画面に入ってから出るまで全体を使う
+      // rect.top = windowHeight (画面下端) -> progress = 0
+      // rect.bottom = 0 (画面上端) -> progress = 1
+      // スクロール距離 = containerHeight + windowHeight
       
-      // スクロール可能な距離を拡張（開始が早くなる分、終了も早くなる）
-      const scrollableDistance = containerHeight - windowHeight + startOffset;
+      const totalScrollDistance = containerHeight + windowHeight;
+      const scrolled = windowHeight - rect.top;
       
-      // 現在のスクロール位置（コンテナの上端が画面上端からどれくらい上にあるか）
-      const scrolled = startPoint - rect.top;
-      
-      if (scrollableDistance > 0 && scrolled >= 0) {
-        // 進行度 (0.0 〜 1.0)
-        let progress = scrolled / scrollableDistance;
-        progress = Math.max(0, Math.min(1, progress));
-        
-        // 動画の位置を更新
-        if (videoRef.current) {
-          videoRef.current.currentTime = progress * duration;
-        }
-      } else if (scrolled < 0 && videoRef.current) {
-        // 開始前は0秒に設定
-        videoRef.current.currentTime = 0;
+      if (scrolled >= 0 && totalScrollDistance > 0) {
+         let progress = scrolled / totalScrollDistance;
+         
+         // Stickyセクションなので、視覚的には「止まっている」間に動画が進むように感じるのが自然
+         // しかし、Stickyの期間だけを使うと開始・終了が唐突に感じる場合がある
+         // ここでは、少し余裕を持たせて、Sticky期間を中心に動画が進むように調整する
+         
+         // 0.0 ~ 1.0 の範囲に制限
+         progress = Math.max(0, Math.min(1, progress));
+         
+         if (videoRef.current) {
+           videoRef.current.currentTime = progress * duration;
+         }
       }
     };
 
@@ -89,7 +97,7 @@ export default function VideoScrub() {
           src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4"
           muted
           playsInline
-          preload="metadata"
+          preload="auto"
           className="w-full h-full object-cover"
           style={{
             filter: 'grayscale(80%) contrast(1.2) brightness(0.8)', // トーン調整

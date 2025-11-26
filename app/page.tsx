@@ -12,7 +12,7 @@ const ThreeBackground = dynamic(() => import("@/components/ThreeBackground"), {
 
 export default function Home() {
   return (
-    <main className="flex-1 relative min-h-screen overflow-x-hidden bg-[#050510] text-white">
+    <main className="flex-1 relative min-h-screen overflow-x-hidden">
       {/* 背景 */}
       <ThreeBackground />
       
@@ -22,13 +22,16 @@ export default function Home() {
           <div className="text-center">
             {/* Hero Section */}
             <FadeIn>
-              <div className="mb-20">
-                <h1 className="text-6xl md:text-8xl font-bold mb-6 leading-tight tracking-tight">
-                  <span className="bg-clip-text text-transparent bg-linear-to-r from-blue-400 via-cyan-300 to-blue-500 drop-shadow-[0_0_15px_rgba(50,150,255,0.6)]">
+              <div className="mb-24">
+                <div className="inline-block mb-6 px-4 py-1.5 rounded-full border border-blue-500/30 bg-blue-500/10 backdrop-blur-sm">
+                  <span className="text-blue-300 text-sm font-medium tracking-wider uppercase">Premium Documentation Viewer</span>
+                </div>
+                <h1 className="text-6xl md:text-8xl font-bold mb-8 leading-tight tracking-tight">
+                  <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-cyan-300 to-purple-500 drop-shadow-[0_0_25px_rgba(50,150,255,0.5)]">
                     Markdown
                   </span>
                   <br />
-                  View Article
+                  <span className="text-white drop-shadow-lg">View Article</span>
                 </h1>
                 <p className="text-xl md:text-2xl mb-12 max-w-3xl mx-auto leading-relaxed text-gray-300 font-light">
                   GitHub リポジトリから Markdown ファイルを取得し、
@@ -39,9 +42,9 @@ export default function Home() {
                 <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
                   <Link
                     href="/docs"
-                    className="group relative inline-flex items-center justify-center px-12 py-4 text-lg font-bold overflow-hidden rounded-full bg-gray-800/40 border border-white/10 backdrop-blur-sm transition-all duration-300 hover:bg-gray-700/50 hover:scale-105 hover:shadow-[0_0_20px_rgba(50,150,255,0.3)] hover:border-blue-400/50"
+                    className="group relative inline-flex items-center justify-center px-12 py-4 text-lg font-bold overflow-hidden rounded-full bg-blue-600/20 border border-blue-400/30 backdrop-blur-sm transition-all duration-300 hover:bg-blue-600/40 hover:scale-105 hover:shadow-[0_0_30px_rgba(50,150,255,0.4)] hover:border-blue-400/60"
                   >
-                    <span className="bg-clip-text text-transparent bg-linear-to-r from-blue-200 to-white">
+                    <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-100 to-white group-hover:text-white transition-colors">
                       📖 ドキュメント一覧を見る
                     </span>
                   </Link>
@@ -50,7 +53,7 @@ export default function Home() {
                     href="https://github.com"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group relative inline-flex items-center justify-center px-12 py-4 text-lg font-bold overflow-hidden rounded-full bg-gray-800/40 border border-white/10 backdrop-blur-sm transition-all duration-300 hover:bg-gray-700/50 hover:scale-105 hover:border-white/30"
+                    className="group relative inline-flex items-center justify-center px-12 py-4 text-lg font-bold overflow-hidden rounded-full bg-white/5 border border-white/10 backdrop-blur-sm transition-all duration-300 hover:bg-white/10 hover:scale-105 hover:border-white/30"
                   >
                     <svg
                       className="w-6 h-6 mr-2 text-white"
@@ -72,8 +75,8 @@ export default function Home() {
             {/* Features Section */}
             <div className="mt-32 grid md:grid-cols-3 gap-8 text-left">
               <FadeIn delay={0.2}>
-                <div className="group p-8 rounded-2xl bg-white/5 border border-white/5 backdrop-blur-md hover:bg-white/10 hover:border-blue-500/30 transition-all duration-300 hover:-translate-y-2 shadow-lg hover:shadow-blue-500/20">
-                  <div className="text-5xl mb-6 transform group-hover:scale-110 transition-transform duration-300">🚀</div>
+                <div className="glass-card p-8 h-full hover:shadow-[0_0_30px_rgba(50,150,255,0.2)] hover:border-blue-500/30 group">
+                  <div className="text-5xl mb-6 transform group-hover:scale-110 transition-transform duration-300 drop-shadow-lg">🚀</div>
                   <h3 className="text-2xl font-bold mb-4 text-white group-hover:text-blue-300 transition-colors">
                     高速な静的サイト
                   </h3>
@@ -84,8 +87,8 @@ export default function Home() {
               </FadeIn>
 
               <FadeIn delay={0.4}>
-                <div className="group p-8 rounded-2xl bg-white/5 border border-white/5 backdrop-blur-md hover:bg-white/10 hover:border-purple-500/30 transition-all duration-300 hover:-translate-y-2 shadow-lg hover:shadow-purple-500/20">
-                  <div className="text-5xl mb-6 transform group-hover:scale-110 transition-transform duration-300">📝</div>
+                <div className="glass-card p-8 h-full hover:shadow-[0_0_30px_rgba(168,85,247,0.2)] hover:border-purple-500/30 group">
+                  <div className="text-5xl mb-6 transform group-hover:scale-110 transition-transform duration-300 drop-shadow-lg">📝</div>
                   <h3 className="text-2xl font-bold mb-4 text-white group-hover:text-purple-300 transition-colors">
                     Markdown & Mermaid
                   </h3>
@@ -96,8 +99,8 @@ export default function Home() {
               </FadeIn>
 
               <FadeIn delay={0.6}>
-                <div className="group p-8 rounded-2xl bg-white/5 border border-white/5 backdrop-blur-md hover:bg-white/10 hover:border-green-500/30 transition-all duration-300 hover:-translate-y-2 shadow-lg hover:shadow-green-500/20">
-                  <div className="text-5xl mb-6 transform group-hover:scale-110 transition-transform duration-300">🔄</div>
+                <div className="glass-card p-8 h-full hover:shadow-[0_0_30px_rgba(34,197,94,0.2)] hover:border-green-500/30 group">
+                  <div className="text-5xl mb-6 transform group-hover:scale-110 transition-transform duration-300 drop-shadow-lg">🔄</div>
                   <h3 className="text-2xl font-bold mb-4 text-white group-hover:text-green-300 transition-colors">
                     自動デプロイ
                   </h3>

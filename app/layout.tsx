@@ -1,8 +1,11 @@
 import type React from "react";
 import type { Metadata } from "next";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Markdown View Article - ドキュメント閲覧",
@@ -16,7 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja">
-      <body className="antialiased flex flex-col min-h-screen">
+      <body className={`${inter.className} antialiased flex flex-col min-h-screen bg-[#050510] text-white selection:bg-blue-500/30`}>
         <Header />
         {children}
         <Footer />
