@@ -2,13 +2,15 @@
 
 import Link from 'next/link';
 import GithubSlugger from 'github-slugger';
-import { useMemo } from 'react';
+import { useMemo, useEffect, useState } from 'react';
 
 interface TableOfContentsProps {
   content: string;
 }
 
 export default function TableOfContents({ content }: TableOfContentsProps) {
+  const [activeId, setActiveId] = useState<string>('');
+
   const headings = useMemo(() => {
     const slugger = new GithubSlugger();
     const lines = content.split('\n');
@@ -33,6 +35,31 @@ export default function TableOfContents({ content }: TableOfContentsProps) {
     return extractedHeadings;
   }, [content]);
 
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveId(entry.target.id);
+          }
+        });
+      },
+      {
+        rootMargin: '-100px 0px -66% 0px',
+        threshold: 0,
+      }
+    );
+
+    headings.forEach((heading) => {
+      const element = document.getElementById(heading.slug);
+      if (element) {
+        observer.observe(element);
+      }
+    });
+
+    return () => observer.disconnect();
+  }, [headings]);
+
   if (headings.length === 0) return null;
 
   return (
@@ -45,14 +72,18 @@ export default function TableOfContents({ content }: TableOfContentsProps) {
           <li key={heading.slug}>
             <Link
               href={`#${heading.slug}`}
-              className="text-gray-400 hover:text-blue-300 transition-all duration-200 block text-sm leading-relaxed hover:translate-x-1"
+              className={`block text-sm leading-relaxed transition-all duration-200 hover:translate-x-1 ${
+                activeId === heading.slug
+                  ? 'text-blue-300 font-medium border-l-2 border-blue-400 pl-3'
+                  : 'text-gray-400 hover:text-blue-300'
+              }`}
               onClick={(e) => {
                 e.preventDefault();
                 const element = document.getElementById(heading.slug);
                 if (element) {
                   element.scrollIntoView({ behavior: 'smooth' });
-                  // URLのハッシュも更新
                   window.history.pushState(null, '', `#${heading.slug}`);
+                  setActiveId(heading.slug);
                 }
               }}
             >
