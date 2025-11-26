@@ -61,17 +61,17 @@ export default async function DocPage({
   // slug が undefined の場合の処理
   if (!resolvedParams?.slug || resolvedParams.slug.length === 0) {
     return (
-      <main className="min-h-screen" style={{ background: '#e0e5ec' }}>
-        <div className="max-w-4xl mx-auto px-6 py-12">
-          <div className="neu-card p-8 text-center">
-            <h1 className="text-4xl font-bold mb-4" style={{ color: '#2c3e50' }}>404 - Not Found</h1>
-            <p className="mb-6" style={{ color: '#5a6c7d' }}>指定されたドキュメントが見つかりませんでした。</p>
-            <Link href="/docs" className="neu-button inline-block px-6 py-3 font-semibold" style={{ color: '#2c3e50' }}>
-              ドキュメント一覧へ戻る
-            </Link>
-          </div>
+    <main className="min-h-screen bg-[#050510]">
+      <div className="max-w-4xl mx-auto px-6 py-12">
+        <div className="glass-card p-8 text-center">
+          <h1 className="text-4xl font-bold mb-4 text-white">404 - Not Found</h1>
+          <p className="mb-6 text-gray-300">指定されたドキュメントが見つかりませんでした。</p>
+          <Link href="/docs" className="glass-button inline-block px-6 py-3 font-semibold">
+            ドキュメント一覧へ戻る
+          </Link>
         </div>
-      </main>
+      </div>
+    </main>
     );
   }
   
@@ -81,17 +81,17 @@ export default async function DocPage({
   
   if (candidates.length === 0) {
     return (
-      <main className="min-h-screen" style={{ background: '#e0e5ec' }}>
-        <div className="max-w-4xl mx-auto px-6 py-12">
-          <div className="neu-card p-8 text-center">
-            <h1 className="text-4xl font-bold mb-4" style={{ color: '#2c3e50' }}>404 - Not Found</h1>
-            <p className="mb-6" style={{ color: '#5a6c7d' }}>指定されたドキュメントが見つかりませんでした。</p>
-            <Link href="/docs" className="neu-button inline-block px-6 py-3 font-semibold" style={{ color: '#2c3e50' }}>
-              ドキュメント一覧へ戻る
-            </Link>
-          </div>
+    <main className="min-h-screen bg-[#050510]">
+      <div className="max-w-4xl mx-auto px-6 py-12">
+        <div className="glass-card p-8 text-center">
+          <h1 className="text-4xl font-bold mb-4 text-white">404 - Not Found</h1>
+          <p className="mb-6 text-gray-300">指定されたドキュメントが見つかりませんでした。</p>
+          <Link href="/docs" className="glass-button inline-block px-6 py-3 font-semibold">
+            ドキュメント一覧へ戻る
+          </Link>
         </div>
-      </main>
+      </div>
+    </main>
     );
   }
 
@@ -110,17 +110,17 @@ export default async function DocPage({
 
   if (!raw || !mdFilePath) {
     return (
-      <main className="min-h-screen" style={{ background: '#e0e5ec' }}>
-        <div className="max-w-4xl mx-auto px-6 py-12">
-          <div className="neu-card p-8 text-center">
-            <h1 className="text-4xl font-bold mb-4" style={{ color: '#2c3e50' }}>404 - Not Found</h1>
-            <p className="mb-6" style={{ color: '#5a6c7d' }}>指定されたドキュメントが見つかりませんでした。</p>
-            <Link href="/docs" className="neu-button inline-block px-6 py-3 font-semibold" style={{ color: '#2c3e50' }}>
-              ドキュメント一覧へ戻る
-            </Link>
-          </div>
+    <main className="min-h-screen bg-[#050510]">
+      <div className="max-w-4xl mx-auto px-6 py-12">
+        <div className="glass-card p-8 text-center">
+          <h1 className="text-4xl font-bold mb-4 text-white">404 - Not Found</h1>
+          <p className="mb-6 text-gray-300">指定されたドキュメントが見つかりませんでした。</p>
+          <Link href="/docs" className="glass-button inline-block px-6 py-3 font-semibold">
+            ドキュメント一覧へ戻る
+          </Link>
         </div>
-      </main>
+      </div>
+    </main>
     );
   }
 
@@ -205,9 +205,9 @@ export default async function DocPage({
   // });
 
   return (
-    <main className="min-h-screen" style={{ background: '#e0e5ec' }}>
+    <main className="min-h-screen bg-[#050510]">
       <div className="max-w-4xl mx-auto px-6 py-12">
-        <article className="neu-card p-8 md:p-12">
+        <article className="glass-card p-8 md:p-12">
           <MarkdownRenderer content={processedContent} imageMap={imageMapObject} />
         </article>
       </div>
