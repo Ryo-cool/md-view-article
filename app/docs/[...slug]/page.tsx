@@ -2,6 +2,7 @@ import matter from 'gray-matter';
 import MarkdownRenderer from '@/components/MarkdownRenderer';
 import { listMarkdownFiles, fetchMarkdown, fetchImage } from '@/lib/content';
 import Link from 'next/link';
+import TableOfContents from '@/components/TableOfContents';
 
 export const dynamic = 'force-static';
 
@@ -206,10 +207,16 @@ export default async function DocPage({
 
   return (
     <main className="min-h-screen bg-[#050510]">
-      <div className="max-w-4xl mx-auto px-6 py-12">
-        <article className="glass-card p-8 md:p-12">
-          <MarkdownRenderer content={processedContent} imageMap={imageMapObject} />
-        </article>
+      <div className="max-w-7xl mx-auto px-6 py-12">
+        <div className="flex flex-col lg:flex-row gap-8 items-start">
+          <article className="glass-card p-8 md:p-12 flex-1 min-w-0">
+            <MarkdownRenderer content={processedContent} imageMap={imageMapObject} />
+          </article>
+          
+          <aside className="hidden lg:block w-80 shrink-0">
+            <TableOfContents content={content} />
+          </aside>
+        </div>
       </div>
     </main>
   );
