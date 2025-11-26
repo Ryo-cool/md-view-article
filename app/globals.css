@@ -73,17 +73,84 @@ article strong {
   color: #fff !important;
 }
 
+article em {
+  color: #e2e8f0 !important;
+  font-style: italic;
+}
+
 article h1,
 article h2,
 article h3,
-article h4 {
+article h4,
+article h5,
+article h6 {
   color: #fff !important;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+article h1 {
+  font-size: 2.25rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+article h2 {
+  font-size: 1.75rem;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+article h3 {
+  font-size: 1.375rem;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
 }
 
 article p {
-  color: #cbd5e1 !important; /* slate-300 */
+  color: #e2e8f0 !important; /* slate-200 - より明るく */
+  line-height: 1.8;
+  margin-bottom: 1rem;
 }
 
+/* リスト（ul, ol）のスタイル */
+article ul,
+article ol {
+  color: #e2e8f0 !important;
+  margin: 1rem 0;
+  padding-left: 1.5rem;
+}
+
+article ul {
+  list-style-type: disc;
+}
+
+article ol {
+  list-style-type: decimal;
+}
+
+article li {
+  color: #e2e8f0 !important; /* slate-200 */
+  line-height: 1.8;
+  margin-bottom: 0.5rem;
+}
+
+article li::marker {
+  color: #60a5fa; /* blue-400 - マーカーにアクセントカラー */
+}
+
+article ul ul,
+article ol ol,
+article ul ol,
+article ol ul {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+/* リンク */
 article a {
   color: #60a5fa !important; /* blue-400 */
   text-decoration: none;
@@ -92,20 +159,119 @@ article a {
 }
 
 article a:hover {
+  color: #93c5fd !important; /* blue-300 */
   border-bottom-color: #60a5fa;
   text-shadow: 0 0 8px rgba(96, 165, 250, 0.4);
 }
 
+/* インラインコード */
 article code {
   background: rgba(255, 255, 255, 0.1) !important;
-  color: #e2e8f0 !important;
+  color: #f472b6 !important; /* pink-400 - コードを目立たせる */
   padding: 0.2em 0.4em;
   border-radius: 4px;
+  font-size: 0.9em;
 }
 
+/* コードブロック */
 article pre {
   background: #0f172a !important; /* slate-900 */
   border: 1px solid var(--glass-border);
+  border-radius: 8px;
+  padding: 1rem;
+  overflow-x: auto;
+  margin: 1.5rem 0;
+}
+
+article pre code {
+  background: transparent !important;
+  color: #e2e8f0 !important;
+  padding: 0;
+  font-size: 0.875rem;
+}
+
+/* 引用（blockquote） */
+article blockquote {
+  border-left: 4px solid #60a5fa;
+  background: rgba(96, 165, 250, 0.1);
+  padding: 1rem 1.5rem;
+  margin: 1.5rem 0;
+  border-radius: 0 8px 8px 0;
+  color: #cbd5e1 !important;
+  font-style: italic;
+}
+
+article blockquote p {
+  margin-bottom: 0;
+  color: #cbd5e1 !important;
+}
+
+/* 水平線 */
+article hr {
+  border: none;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.2), transparent);
+  margin: 2.5rem 0;
+}
+
+/* テーブル */
+article table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  font-size: 0.95rem;
+}
+
+article th {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff !important;
+  font-weight: 600;
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+article td {
+  color: #e2e8f0 !important;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+article tr:hover td {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+/* 画像 */
+article img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin: 1.5rem 0;
+}
+
+/* チェックボックス（タスクリスト） */
+article input[type="checkbox"] {
+  accent-color: #60a5fa;
+  width: 1rem;
+  height: 1rem;
+  margin-right: 0.5rem;
+}
+
+/* 定義リスト */
+article dl {
+  margin: 1rem 0;
+}
+
+article dt {
+  color: #fff !important;
+  font-weight: 600;
+  margin-top: 1rem;
+}
+
+article dd {
+  color: #e2e8f0 !important;
+  margin-left: 1.5rem;
+  margin-top: 0.25rem;
 }
 
 /* Glassmorphism Utilities */
