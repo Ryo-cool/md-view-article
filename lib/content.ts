@@ -11,6 +11,23 @@ function getEnvVar(name: string): string {
   return value;
 }
 
+const DEBUG_ENV = process.env.CONTENT_DEBUG === 'true';
+
+function logEnvDebug() {
+  if (!DEBUG_ENV) return;
+  // トークンは内容を出さず、長さのみを出力
+  console.log('[content] env debug', {
+    hasToken: Boolean(process.env.GITHUB_TOKEN),
+    tokenLength: process.env.GITHUB_TOKEN?.length ?? 0,
+    owner: process.env.CONTENT_REPO_OWNER || '(unset)',
+    repo: process.env.CONTENT_REPO_NAME || '(unset)',
+    branch: process.env.CONTENT_BRANCH || 'main',
+    dir: process.env.CONTENT_DIR || '',
+  });
+}
+
+logEnvDebug();
+
 const TOKEN = getEnvVar('GITHUB_TOKEN');
 const OWNER = getEnvVar('CONTENT_REPO_OWNER');
 const REPO = getEnvVar('CONTENT_REPO_NAME');
@@ -50,6 +67,12 @@ async function getHeadSha(): Promise<string> {
       // トークンは有効（認証できている）
     } catch (authError: unknown) {
       const authErr = authError as { status?: number; message?: string };
+      if (DEBUG_ENV) {
+        console.error('[content] auth error', {
+          status: authErr?.status,
+          message: authErr?.message,
+        });
+      }
       if (authErr?.status === 401) {
         throw new Error(
           `認証に失敗しました。GITHUB_TOKEN が無効です。\n` +
@@ -84,6 +107,12 @@ async function getHeadSha(): Promise<string> {
       return ref.object.sha;
     } catch (repoError: unknown) {
       const repoErr = repoError as { status?: number; message?: string };
+      if (DEBUG_ENV) {
+        console.error('[content] repo error', {
+          status: repoErr?.status,
+          message: repoErr?.message,
+        });
+      }
       
       // リポジトリ情報取得時のエラー
       if (repoErr?.status === 404) {
