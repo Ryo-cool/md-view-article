@@ -19,7 +19,12 @@ export default function Mermaid({ chart }: MermaidProps) {
           startOnLoad: false,
           theme: 'base',
           themeVariables: {
-            darkMode: true,
+            // NOTE: keep darkMode false. Mermaid's "base" theme unconditionally
+            // darkens cScaleN (mindmap/ER section colors) by 75% when darkMode
+            // is true, which crushes any color we set here down to near-black.
+            // With darkMode false it only darkens by 25%, so we compensate by
+            // picking lighter source colors for cScaleN below.
+            darkMode: false,
             background: 'transparent',
             
             // Main colors
@@ -109,6 +114,41 @@ export default function Mermaid({ chart }: MermaidProps) {
             // Error/Critical
             errorBkgColor: '#7f1d1d',
             errorTextColor: '#fecaca',
+
+            // Mindmap / quadrant / multi-section diagrams (cScale0-11).
+            // These get an automatic 25% darken applied on top, so the
+            // source colors here are intentionally lighter than they end up.
+            cScale0: '#60a5fa',
+            cScale1: '#c084fc',
+            cScale2: '#22d3ee',
+            cScale3: '#f472b6',
+            cScale4: '#4ade80',
+            cScale5: '#fbbf24',
+            cScale6: '#f87171',
+            cScale7: '#818cf8',
+            cScale8: '#2dd4bf',
+            cScale9: '#fb923c',
+            cScale10: '#e879f9',
+            cScale11: '#a3e635',
+            cScaleLabel0: '#f8fafc',
+            cScaleLabel1: '#f8fafc',
+            cScaleLabel2: '#f8fafc',
+            cScaleLabel3: '#f8fafc',
+            cScaleLabel4: '#f8fafc',
+            cScaleLabel5: '#f8fafc',
+            cScaleLabel6: '#f8fafc',
+            cScaleLabel7: '#f8fafc',
+            cScaleLabel8: '#f8fafc',
+            cScaleLabel9: '#f8fafc',
+            cScaleLabel10: '#f8fafc',
+            cScaleLabel11: '#f8fafc',
+
+            // ER diagram attribute row striping
+            rowOdd: '#1e293b',
+            rowEven: '#0f172a',
+
+            // Gantt: alternate section band (defaults to opaque white otherwise)
+            altSectionBkgColor: '#1e293b',
           },
           securityLevel: 'loose',
         });
