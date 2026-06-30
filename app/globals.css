@@ -65,11 +65,25 @@ body {
   background: rgba(255, 255, 255, 0.02);
   padding: 1.5rem;
   border-radius: 12px;
+  /* Default text color for diagram elements that don't set their own color
+     (e.g. classDef) */
+  color: #f8fafc;
 }
 
-/* Force Mermaid text color to override article styles */
-.mermaid, .mermaid * {
-  color: #f8fafc !important;
+/* Mermaid renders node/edge labels as nested <p>/<span>/<div> tags inside the
+   SVG's foreignObject. The "article" typography rules above match these same
+   tags and, being !important, were clobbering colors Mermaid sets explicitly
+   via inline style for classDef'd nodes (e.g. dark text on a light pastel
+   node background). Force these tags to inherit instead, so the color comes
+   from the nearest Mermaid-controlled ancestor (a classDef'd node, or this
+   .mermaid block's default above) rather than the article's text color. */
+.mermaid p,
+.mermaid span,
+.mermaid div,
+.mermaid li,
+.mermaid strong,
+.mermaid em {
+  color: inherit !important;
 }
 
 /* Markdown Typography Overrides for Dark Mode */
