@@ -1,22 +1,39 @@
 import Link from 'next/link';
+import ThemeToggle from '@/components/landing/ThemeToggle';
 
 export default function Header() {
   return (
     <header className="sticky top-0 z-50 pt-4 pb-2">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="glass-card px-6 py-4 flex items-center justify-between bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-lg shadow-black/20">
+        <div className="glass-card px-4 sm:px-6 py-3.5 flex items-center justify-between backdrop-blur-xl rounded-2xl shadow-lg shadow-black/10">
           <Link href="/" className="flex items-center space-x-3 group">
-            <span className="text-2xl filter drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]">📚</span>
-            <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 group-hover:to-blue-300 transition-all duration-300">
-              Markdown Docs
+            {/* しずくのロゴ */}
+            <span className="relative w-9 h-9 rounded-xl bg-gradient-to-br from-teal-400/20 to-sky-500/20 border border-teal-300/25 flex items-center justify-center group-hover:shadow-[0_0_18px_var(--ring-glow)] transition-shadow duration-500">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.7"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="w-5 h-5 text-accent"
+                aria-hidden="true"
+              >
+                <path d="M12 3c3.5 4.2 6 7.5 6 10.5a6 6 0 0 1-12 0C6 10.5 8.5 7.2 12 3z" />
+                <path d="M9.5 14.5a2.5 2.5 0 0 0 2 2" opacity="0.6" />
+              </svg>
+            </span>
+            <span className="text-base sm:text-xl font-bold tracking-tight text-foreground group-hover:text-accent transition-colors duration-300">
+              Markdown View Article
             </span>
           </Link>
-          <nav className="flex items-center space-x-4">
+          <nav className="flex items-center space-x-2 sm:space-x-3">
             <Link
               href="/docs"
-              className="glass-button px-5 py-2.5 font-medium text-sm flex items-center gap-2 group"
+              className="glass-button px-4 sm:px-5 py-2.5 font-medium text-sm flex items-center gap-2 group"
             >
-              <span>ドキュメント一覧</span>
+              <span className="hidden sm:inline">ドキュメント一覧</span>
+              <span className="sm:hidden">Docs</span>
               <span className="group-hover:translate-x-0.5 transition-transform">→</span>
             </Link>
             <a
@@ -38,10 +55,10 @@ export default function Header() {
                 />
               </svg>
             </a>
+            <ThemeToggle />
           </nav>
         </div>
       </div>
     </header>
   );
 }
-

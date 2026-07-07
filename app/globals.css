@@ -1,17 +1,54 @@
 @import 'tailwindcss';
 
-:root {
+:root,
+:root[data-theme='dark'] {
   --background: #050510;
-  --foreground: #ffffff;
+  --foreground: #f6f9ff;
+  --muted: #94a3b8;
+  --muted-strong: #cbd5e1;
+  --accent: #2dd4bf;
+  --accent-soft: #7dd3fc;
+  --surface-1: #070d1d;
+  --surface-2: #050a16;
+  --surface-3: #04070f;
   --glass-border: rgba(255, 255, 255, 0.1);
   --glass-bg: rgba(255, 255, 255, 0.05);
   --glass-shine: rgba(255, 255, 255, 0.1);
   --primary-glow: rgba(50, 150, 255, 0.5);
+  --hero-text: #f6f9ff;
+  --ring-glow: rgba(125, 211, 252, 0.35);
+  color-scheme: dark;
+}
+
+:root[data-theme='light'] {
+  --background: #f2f7fa;
+  --foreground: #0b1b2b;
+  --muted: #55677d;
+  --muted-strong: #3c4f66;
+  --accent: #0d9488;
+  --accent-soft: #0ea5e9;
+  --surface-1: #e8f1f6;
+  --surface-2: #f2f7fa;
+  --surface-3: #e2edf3;
+  --glass-border: rgba(11, 27, 43, 0.1);
+  --glass-bg: rgba(255, 255, 255, 0.55);
+  --glass-shine: rgba(255, 255, 255, 0.8);
+  --primary-glow: rgba(14, 165, 233, 0.35);
+  --hero-text: #06283d;
+  --ring-glow: rgba(13, 148, 136, 0.25);
+  color-scheme: light;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-muted-strong: var(--muted-strong);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-surface-1: var(--surface-1);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
 }
 
 body {
@@ -294,9 +331,104 @@ article dd {
   margin-top: 0.25rem;
 }
 
+/* ============================================================
+   Light theme overrides for markdown articles (docs pages)
+   ============================================================ */
+:root[data-theme='light'] article strong,
+:root[data-theme='light'] strong {
+  color: #0b1b2b !important;
+}
+
+:root[data-theme='light'] article em {
+  color: #1e293b !important;
+}
+
+:root[data-theme='light'] article h1,
+:root[data-theme='light'] article h2,
+:root[data-theme='light'] article h3,
+:root[data-theme='light'] article h4,
+:root[data-theme='light'] article h5,
+:root[data-theme='light'] article h6 {
+  color: #0b1b2b !important;
+}
+
+:root[data-theme='light'] article h1,
+:root[data-theme='light'] article h2 {
+  border-bottom-color: rgba(11, 27, 43, 0.12);
+}
+
+:root[data-theme='light'] article p,
+:root[data-theme='light'] article ul,
+:root[data-theme='light'] article ol,
+:root[data-theme='light'] article li,
+:root[data-theme='light'] article dd {
+  color: #24344a !important;
+}
+
+:root[data-theme='light'] article li::marker {
+  color: #0d9488;
+}
+
+:root[data-theme='light'] article a {
+  color: #0369a1 !important;
+  border-bottom-color: rgba(3, 105, 161, 0.3);
+}
+
+:root[data-theme='light'] article a:hover {
+  color: #0284c7 !important;
+  text-shadow: none;
+}
+
+:root[data-theme='light'] article code {
+  background: rgba(11, 27, 43, 0.07) !important;
+  color: #be185d !important;
+}
+
+:root[data-theme='light'] article pre {
+  background: #0f172a !important;
+}
+
+:root[data-theme='light'] article blockquote,
+:root[data-theme='light'] article blockquote p {
+  color: #3c4f66 !important;
+}
+
+:root[data-theme='light'] article th {
+  background: rgba(11, 27, 43, 0.06);
+  color: #0b1b2b !important;
+  border-bottom-color: rgba(11, 27, 43, 0.2);
+}
+
+:root[data-theme='light'] article td {
+  color: #24344a !important;
+  border-bottom-color: rgba(11, 27, 43, 0.08);
+}
+
+:root[data-theme='light'] article dt {
+  color: #0b1b2b !important;
+}
+
+:root[data-theme='light'] [class^='markdown-alert'] {
+  background: rgba(255, 255, 255, 0.7);
+  color: #24344a;
+}
+
+:root[data-theme='light'] .markdown-alert-note,
+:root[data-theme='light'] .markdown-alert-tip,
+:root[data-theme='light'] .markdown-alert-important,
+:root[data-theme='light'] .markdown-alert-warning,
+:root[data-theme='light'] .markdown-alert-caution {
+  color: #24344a;
+}
+
+:root[data-theme='light'] .mermaid {
+  background: rgba(11, 27, 43, 0.03);
+  color: #0f172a;
+}
+
 /* Glassmorphism Utilities */
 .glass-panel {
-  background: rgba(15, 23, 42, 0.6);
+  background: var(--glass-bg);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--glass-border);
 }
@@ -312,28 +444,239 @@ article dd {
 }
 
 .glass-card:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.2);
+  background: var(--glass-shine);
+  border-color: var(--ring-glow);
   transform: translateY(-2px);
-  box-shadow: 0 0 20px rgba(50, 150, 255, 0.15);
+  box-shadow: 0 0 20px var(--primary-glow);
 }
 
 .glass-button {
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--glass-bg);
   backdrop-filter: blur(4px);
   border: 1px solid var(--glass-border);
   border-radius: 8px;
-  color: #e2e8f0;
+  color: var(--muted-strong);
   transition: all 0.2s ease;
 }
 
 .glass-button:hover {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.3);
-  color: #fff;
-  box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+  background: var(--glass-shine);
+  border-color: var(--ring-glow);
+  color: var(--foreground);
+  box-shadow: 0 0 15px var(--primary-glow);
 }
 
 .text-glow {
   text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+/* ============================================================
+   Landing page — liquid / water aesthetics
+   ============================================================ */
+
+/* Hero gradient headline */
+.hero-gradient-text {
+  background: linear-gradient(100deg, #5eead4 0%, #7dd3fc 40%, #a5f3fc 65%, #e0f2fe 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+:root[data-theme='light'] .hero-gradient-text {
+  background: linear-gradient(100deg, #0f766e 0%, #0369a1 55%, #075985 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Liquid CTA button — a blob expands from the pointer position */
+.liquid-btn {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  transition: border-color 0.4s ease, box-shadow 0.4s ease, transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.liquid-btn::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  left: var(--mx, 50%);
+  top: var(--my, 50%);
+  width: 220%;
+  aspect-ratio: 1;
+  border-radius: 46% 54% 52% 48% / 55% 46% 54% 45%;
+  background: linear-gradient(135deg, rgba(45, 212, 191, 0.9), rgba(14, 165, 233, 0.9));
+  transform: translate(-50%, -50%) scale(0);
+  transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.liquid-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px -8px var(--primary-glow);
+}
+
+.liquid-btn:hover::before {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+/* Soft radial highlight that follows the pointer on glass cards */
+.ripple-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.ripple-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    340px circle at var(--mx, 50%) var(--my, 50%),
+    var(--ring-glow),
+    transparent 65%
+  );
+  opacity: 0;
+  transition: opacity 0.45s ease;
+  pointer-events: none;
+}
+
+.ripple-card:hover::before {
+  opacity: 1;
+}
+
+/* Expanding ripple ring (injected on hover / click) */
+@keyframes ripple-ring {
+  from {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0.8;
+  }
+  to {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0;
+  }
+}
+
+.ripple-ring {
+  position: absolute;
+  left: var(--mx, 50%);
+  top: var(--my, 50%);
+  width: 320px;
+  aspect-ratio: 1;
+  border-radius: 9999px;
+  border: 1.5px solid var(--ring-glow);
+  animation: ripple-ring 0.9s ease-out forwards;
+  pointer-events: none;
+}
+
+/* Floating orbs in the hero */
+@keyframes float-slow {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -22px, 0);
+  }
+}
+
+.float-slow {
+  animation: float-slow 7s ease-in-out infinite;
+}
+
+.float-slower {
+  animation: float-slow 11s ease-in-out infinite reverse;
+}
+
+/* Drifting wave dividers between sections */
+@keyframes wave-drift {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.wave-drift {
+  animation: wave-drift 18s linear infinite;
+}
+
+.wave-drift-slow {
+  animation: wave-drift 30s linear infinite reverse;
+}
+
+/* Scroll hint */
+@keyframes scroll-dot {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  70% {
+    transform: translateY(14px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+}
+
+.scroll-dot {
+  animation: scroll-dot 2s ease-in-out infinite;
+}
+
+/* Masonry gallery */
+.masonry {
+  columns: 1;
+  column-gap: 1.25rem;
+}
+
+@media (min-width: 640px) {
+  .masonry {
+    columns: 2;
+  }
+}
+
+@media (min-width: 1024px) {
+  .masonry {
+    columns: 3;
+  }
+}
+
+.masonry > * {
+  break-inside: avoid;
+  margin-bottom: 1.25rem;
+}
+
+/* Landing form fields */
+.field-liquid {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 14px;
+  color: var(--foreground);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+}
+
+.field-liquid::placeholder {
+  color: var(--muted);
+  opacity: 0.7;
+}
+
+.field-liquid:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px var(--ring-glow);
+  background: var(--glass-shine);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .float-slow,
+  .float-slower,
+  .wave-drift,
+  .wave-drift-slow,
+  .scroll-dot,
+  .ripple-ring {
+    animation: none;
+  }
 }

@@ -29,9 +29,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ja">
+    <html lang="ja" suppressHydrationWarning>
+      <head>
+        <script
+          // ペイント前にテーマを適用して FOUC を防ぐ
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem('theme');document.documentElement.dataset.theme=(t==='light'||t==='dark')?t:'dark';}catch(e){document.documentElement.dataset.theme='dark';}})();`,
+          }}
+        />
+      </head>
       <body
-        className={`${inter.variable} ${notoSansJp.variable} antialiased flex flex-col min-h-screen bg-[#050510] text-white selection:bg-blue-500/30`}
+        className={`${inter.variable} ${notoSansJp.variable} antialiased flex flex-col min-h-screen bg-background text-foreground selection:bg-teal-500/30 transition-colors duration-500`}
       >
         <Header />
         {children}
