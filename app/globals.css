@@ -331,6 +331,34 @@ article dd {
   margin-top: 0.25rem;
 }
 
+@media (max-width: 639px) {
+  article blockquote {
+    padding: 0.75rem 1rem;
+  }
+
+  [class^='markdown-alert'] {
+    padding: 0.875rem 1rem;
+  }
+
+  .mermaid {
+    padding: 0.75rem;
+  }
+
+  article pre {
+    padding: 0.75rem;
+  }
+
+  article ul,
+  article ol {
+    padding-left: 1.25rem;
+  }
+
+  article th,
+  article td {
+    padding: 0.5rem 0.75rem;
+  }
+}
+
 /* ============================================================
    Light theme overrides for markdown articles (docs pages)
    ============================================================ */

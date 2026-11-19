@@ -63,8 +63,8 @@ export default async function DocPage({
   if (!resolvedParams?.slug || resolvedParams.slug.length === 0) {
     return (
     <main className="min-h-screen bg-[#050510]">
-      <div className="max-w-4xl mx-auto px-6 py-12">
-        <div className="glass-card p-8 text-center">
+      <div className="max-w-4xl mx-auto px-3 sm:px-6 py-8 sm:py-12">
+        <div className="glass-card p-6 sm:p-8 text-center">
           <h1 className="text-4xl font-bold mb-4 text-white">404 - Not Found</h1>
           <p className="mb-6 text-gray-300">指定されたドキュメントが見つかりませんでした。</p>
           <Link href="/docs" className="glass-button inline-block px-6 py-3 font-semibold">
@@ -83,8 +83,8 @@ export default async function DocPage({
   if (candidates.length === 0) {
     return (
     <main className="min-h-screen bg-[#050510]">
-      <div className="max-w-4xl mx-auto px-6 py-12">
-        <div className="glass-card p-8 text-center">
+      <div className="max-w-4xl mx-auto px-3 sm:px-6 py-8 sm:py-12">
+        <div className="glass-card p-6 sm:p-8 text-center">
           <h1 className="text-4xl font-bold mb-4 text-white">404 - Not Found</h1>
           <p className="mb-6 text-gray-300">指定されたドキュメントが見つかりませんでした。</p>
           <Link href="/docs" className="glass-button inline-block px-6 py-3 font-semibold">
@@ -112,8 +112,8 @@ export default async function DocPage({
   if (!raw || !mdFilePath) {
     return (
     <main className="min-h-screen bg-[#050510]">
-      <div className="max-w-4xl mx-auto px-6 py-12">
-        <div className="glass-card p-8 text-center">
+      <div className="max-w-4xl mx-auto px-3 sm:px-6 py-8 sm:py-12">
+        <div className="glass-card p-6 sm:p-8 text-center">
           <h1 className="text-4xl font-bold mb-4 text-white">404 - Not Found</h1>
           <p className="mb-6 text-gray-300">指定されたドキュメントが見つかりませんでした。</p>
           <Link href="/docs" className="glass-button inline-block px-6 py-3 font-semibold">
@@ -207,9 +207,9 @@ export default async function DocPage({
 
   return (
     <main className="min-h-screen bg-[#050510]">
-      <div className="max-w-7xl mx-auto px-6 py-12">
+      <div className="max-w-7xl mx-auto px-2 sm:px-6 py-4 sm:py-12">
         <div className="flex flex-col lg:flex-row gap-8">
-          <article className="glass-card p-8 md:p-12 flex-1 min-w-0">
+          <article className="glass-card px-4 py-6 sm:p-8 md:p-12 flex-1 min-w-0">
             <MarkdownRenderer content={processedContent} imageMap={imageMapObject} />
           </article>
           

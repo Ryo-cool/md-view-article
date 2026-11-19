@@ -44,12 +44,12 @@ export const markdownComponents: Components = {
     </p>
   ),
   ul: ({ children, ...props }: any) => (
-    <ul className="list-disc mb-4 space-y-2 ml-6 pl-1" style={{ color: '#5a6c7d' }} {...props}>
+    <ul className="list-disc mb-4 space-y-2 ml-2 sm:ml-6 pl-1" style={{ color: '#5a6c7d' }} {...props}>
       {children}
     </ul>
   ),
   ol: ({ children, ...props }: any) => (
-    <ol className="list-decimal mb-4 space-y-2 ml-6 pl-1" style={{ color: '#5a6c7d' }} {...props}>
+    <ol className="list-decimal mb-4 space-y-2 ml-2 sm:ml-6 pl-1" style={{ color: '#5a6c7d' }} {...props}>
       {children}
     </ol>
   ),
@@ -59,7 +59,7 @@ export const markdownComponents: Components = {
     </li>
   ),
   blockquote: ({ children, ...props }: any) => (
-    <blockquote className="neu-pressed pl-6 pr-4 italic my-4 py-4" style={{
+    <blockquote className="neu-pressed pl-4 pr-3 sm:pl-6 sm:pr-4 italic my-4 py-3 sm:py-4" style={{
       color: '#5a6c7d',
       borderLeft: '4px solid rgba(74, 144, 226, 0.6)'
     }} {...props}>
@@ -67,7 +67,7 @@ export const markdownComponents: Components = {
     </blockquote>
   ),
   table: ({ children, ...props }: any) => (
-    <div className="overflow-x-auto my-4 neu-pressed p-4">
+    <div className="overflow-x-auto my-4 neu-pressed p-2 sm:p-4">
       <table className="min-w-full border-collapse" {...props}>
         {children}
       </table>
