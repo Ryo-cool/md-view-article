@@ -12,6 +12,7 @@ interface CodeBlockProps {
 export default function CodeBlock({ language, code }: CodeBlockProps) {
   const [copied, setCopied] = useState(false);
   const displayLang = language || 'text';
+  const showLineNumbers = code.split('\n').length > 1;
 
   const handleCopy = async () => {
     try {
@@ -25,15 +26,15 @@ export default function CodeBlock({ language, code }: CodeBlockProps) {
 
   return (
     <div className="zenn-code-block my-6 rounded-[10px] overflow-hidden border border-slate-700/60 bg-[#1a2638] shadow-sm">
-      <div className="flex items-center justify-between px-3.5 py-2 bg-[#131d2c] border-b border-white/[0.06] text-xs">
-        <span className="font-mono text-slate-300/90 tracking-wide">
+      <div className="flex items-center justify-between px-3.5 py-1.5 bg-[#131d2c] border-b border-white/[0.07] text-xs">
+        <span className="font-mono text-[11px] text-slate-300/90 tracking-wide">
           {displayLang}
         </span>
         <button
           type="button"
           onClick={handleCopy}
           aria-label="コードをコピー"
-          className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-slate-400 hover:text-slate-100 hover:bg-white/10 transition-colors cursor-pointer"
+          className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] text-slate-400 hover:text-slate-100 hover:bg-white/10 transition-colors cursor-pointer"
         >
           {copied ? (
             <>
@@ -75,10 +76,19 @@ export default function CodeBlock({ language, code }: CodeBlockProps) {
         <SyntaxHighlighter
           language={displayLang}
           style={oneDark}
+          showLineNumbers={showLineNumbers}
+          lineNumberStyle={{
+            minWidth: '2.2em',
+            paddingRight: '0.9em',
+            color: '#475569',
+            textAlign: 'right',
+            fontStyle: 'normal',
+            userSelect: 'none',
+          }}
           customStyle={{
             margin: 0,
-            padding: '1rem 1.15rem',
-            fontSize: '0.86rem',
+            padding: '0.95rem 1.1rem',
+            fontSize: '0.84rem',
             lineHeight: '1.65',
             background: 'transparent',
             borderRadius: 0,

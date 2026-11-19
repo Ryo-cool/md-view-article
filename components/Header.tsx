@@ -3,12 +3,12 @@ import ThemeToggle from '@/components/landing/ThemeToggle';
 
 export default function Header() {
   return (
-    <header className="sticky top-0 z-50 pt-4 pb-2">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="glass-card px-4 sm:px-6 py-3.5 flex items-center justify-between backdrop-blur-xl rounded-2xl shadow-lg shadow-black/10">
-          <Link href="/" className="flex items-center space-x-3 group">
+    <header className="relative sm:sticky sm:top-0 z-50 border-b border-[var(--glass-border)] bg-[var(--background)]/85 backdrop-blur-md sm:border-b-0 sm:bg-transparent sm:backdrop-blur-none sm:pt-4 sm:pb-2">
+      <div className="max-w-7xl mx-auto px-3.5 sm:px-6">
+        <div className="py-2.5 sm:px-6 sm:py-3.5 flex items-center justify-between gap-2 sm:bg-[var(--glass-bg)] sm:border sm:border-[var(--glass-border)] sm:backdrop-blur-xl sm:rounded-2xl sm:shadow-lg sm:shadow-black/10">
+          <Link href="/" className="flex items-center gap-2 sm:gap-3 min-w-0 group">
             {/* しずくのロゴ */}
-            <span className="relative w-9 h-9 rounded-xl bg-gradient-to-br from-teal-400/20 to-sky-500/20 border border-teal-300/25 flex items-center justify-center group-hover:shadow-[0_0_18px_var(--ring-glow)] transition-shadow duration-500">
+            <span className="relative w-7 h-7 sm:w-9 sm:h-9 shrink-0 rounded-lg sm:rounded-xl bg-gradient-to-br from-teal-400/20 to-sky-500/20 border border-teal-300/25 flex items-center justify-center group-hover:shadow-[0_0_18px_var(--ring-glow)] transition-shadow duration-500">
               <svg
                 viewBox="0 0 24 24"
                 fill="none"
@@ -16,21 +16,21 @@ export default function Header() {
                 strokeWidth="1.7"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                className="w-5 h-5 text-accent"
+                className="w-4 h-4 sm:w-5 sm:h-5 text-accent"
                 aria-hidden="true"
               >
                 <path d="M12 3c3.5 4.2 6 7.5 6 10.5a6 6 0 0 1-12 0C6 10.5 8.5 7.2 12 3z" />
                 <path d="M9.5 14.5a2.5 2.5 0 0 0 2 2" opacity="0.6" />
               </svg>
             </span>
-            <span className="text-base sm:text-xl font-bold tracking-tight text-foreground group-hover:text-accent transition-colors duration-300">
+            <span className="text-[13.5px] sm:text-xl font-bold tracking-tight text-foreground whitespace-nowrap truncate group-hover:text-accent transition-colors duration-300">
               Markdown View Article
             </span>
           </Link>
-          <nav className="flex items-center space-x-2 sm:space-x-3">
+          <nav className="flex items-center gap-1.5 sm:gap-3 shrink-0">
             <Link
               href="/docs"
-              className="glass-button px-4 sm:px-5 py-2.5 font-medium text-sm flex items-center gap-2 group"
+              className="glass-button px-2.5 sm:px-5 py-1.5 sm:py-2.5 font-medium text-xs sm:text-sm flex items-center gap-1.5 sm:gap-2 group"
             >
               <span className="hidden sm:inline">ドキュメント一覧</span>
               <span className="sm:hidden">Docs</span>
@@ -40,11 +40,11 @@ export default function Header() {
               href="https://github.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="glass-button p-2.5 inline-flex items-center justify-center group"
+              className="glass-button p-2 sm:p-2.5 inline-flex items-center justify-center group"
               aria-label="GitHub"
             >
               <svg
-                className="w-5 h-5 fill-current group-hover:scale-110 transition-transform"
+                className="w-4 h-4 sm:w-5 sm:h-5 fill-current group-hover:scale-110 transition-transform"
                 viewBox="0 0 24 24"
                 aria-hidden="true"
               >
