@@ -38,9 +38,9 @@ export default function ThemeToggle() {
       type="button"
       onClick={toggle}
       aria-label={theme === 'dark' ? 'ライトモードに切り替え' : 'ダークモードに切り替え'}
-      className="glass-button relative p-2.5 inline-flex items-center justify-center overflow-hidden group"
+      className="glass-button relative p-2 sm:p-2.5 inline-flex items-center justify-center overflow-hidden group"
     >
-      <span className="relative w-5 h-5 block">
+      <span className="relative w-4 h-4 sm:w-5 sm:h-5 block">
         {/* 太陽 */}
         <svg
           viewBox="0 0 24 24"
@@ -48,7 +48,7 @@ export default function ThemeToggle() {
           stroke="currentColor"
           strokeWidth="1.8"
           strokeLinecap="round"
-          className={`absolute inset-0 w-5 h-5 transition-all duration-500 ${
+          className={`absolute inset-0 w-4 h-4 sm:w-5 sm:h-5 transition-all duration-500 ${
             theme === 'light' ? 'opacity-100 rotate-0 scale-100' : 'opacity-0 -rotate-90 scale-50'
           }`}
         >
@@ -63,7 +63,7 @@ export default function ThemeToggle() {
           strokeWidth="1.8"
           strokeLinecap="round"
           strokeLinejoin="round"
-          className={`absolute inset-0 w-5 h-5 transition-all duration-500 ${
+          className={`absolute inset-0 w-4 h-4 sm:w-5 sm:h-5 transition-all duration-500 ${
             theme === 'dark' ? 'opacity-100 rotate-0 scale-100' : 'opacity-0 rotate-90 scale-50'
           }`}
         >

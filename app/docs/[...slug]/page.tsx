@@ -205,16 +205,49 @@ export default async function DocPage({
   //   sample: processedContent.slice(0, 200),
   // });
 
+  const rawCategory =
+    resolvedParams.slug.length > 1 ? resolvedParams.slug[0] : null;
+  const category = rawCategory
+    ? (() => {
+        try {
+          return decodeURIComponent(rawCategory);
+        } catch {
+          return rawCategory;
+        }
+      })()
+    : null;
+
   return (
-    <main className="min-h-screen bg-[#050510]">
-      <div className="max-w-7xl mx-auto px-2 sm:px-6 py-4 sm:py-12">
-        <div className="flex flex-col lg:flex-row gap-8">
-          <article className="glass-card px-4 py-6 sm:p-8 md:p-12 flex-1 min-w-0">
-            <MarkdownRenderer content={processedContent} imageMap={imageMapObject} />
-          </article>
-          
-          <aside className="hidden lg:block w-80 shrink-0">
-            <TableOfContents content={content} />
+    <main className="article-page min-h-screen">
+      <div className="max-w-[1120px] mx-auto px-0 sm:px-6 pt-0 pb-10 sm:py-10">
+        <div className="flex flex-col lg:flex-row items-start gap-8">
+          <div className="article-surface w-full flex-1 min-w-0 px-4 pt-5 pb-10 sm:px-8 sm:py-10 md:px-12 md:py-12">
+            <div className="flex flex-wrap items-center justify-between gap-2 mb-5 pb-3 border-b border-[var(--article-border)] text-xs text-muted">
+              <Link
+                href="/docs"
+                className="inline-flex items-center gap-1.5 hover:text-foreground transition-colors"
+              >
+                <span aria-hidden="true">←</span>
+                <span>ドキュメント一覧</span>
+              </Link>
+              {category && (
+                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-[var(--article-pill-bg)] text-[var(--article-muted)] border border-[var(--article-border)]">
+                  {category}
+                </span>
+              )}
+            </div>
+
+            <div className="lg:hidden mb-6">
+              <TableOfContents content={content} variant="mobile" />
+            </div>
+
+            <article className="article-body">
+              <MarkdownRenderer content={processedContent} imageMap={imageMapObject} />
+            </article>
+          </div>
+
+          <aside className="hidden lg:block w-72 shrink-0">
+            <TableOfContents content={content} variant="sidebar" />
           </aside>
         </div>
       </div>
