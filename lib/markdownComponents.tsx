@@ -1,7 +1,6 @@
 import type { Components } from 'react-markdown';
 import type { ReactElement } from 'react';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { oneLight } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import CodeBlock from '@/components/CodeBlock';
 import Mermaid from '@/components/Mermaid';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -44,12 +43,12 @@ export const markdownComponents: Components = {
     </p>
   ),
   ul: ({ children, ...props }: any) => (
-    <ul className="list-disc mb-4 space-y-2 ml-2 sm:ml-6 pl-1" style={{ color: '#5a6c7d' }} {...props}>
+    <ul className="list-disc mb-4 space-y-2" style={{ color: '#5a6c7d' }} {...props}>
       {children}
     </ul>
   ),
   ol: ({ children, ...props }: any) => (
-    <ol className="list-decimal mb-4 space-y-2 ml-2 sm:ml-6 pl-1" style={{ color: '#5a6c7d' }} {...props}>
+    <ol className="list-decimal mb-4 space-y-2" style={{ color: '#5a6c7d' }} {...props}>
       {children}
     </ol>
   ),
@@ -59,7 +58,7 @@ export const markdownComponents: Components = {
     </li>
   ),
   blockquote: ({ children, ...props }: any) => (
-    <blockquote className="neu-pressed pl-4 pr-3 sm:pl-6 sm:pr-4 italic my-4 py-3 sm:py-4" style={{
+    <blockquote className="neu-pressed italic my-4" style={{
       color: '#5a6c7d',
       borderLeft: '4px solid rgba(74, 144, 226, 0.6)'
     }} {...props}>
@@ -67,7 +66,7 @@ export const markdownComponents: Components = {
     </blockquote>
   ),
   table: ({ children, ...props }: any) => (
-    <div className="overflow-x-auto my-4 neu-pressed p-2 sm:p-4">
+    <div className="zenn-table-wrapper overflow-x-auto my-6">
       <table className="min-w-full border-collapse" {...props}>
         {children}
       </table>
@@ -94,15 +93,15 @@ export const markdownComponents: Components = {
       {children}
     </td>
   ),
-  pre: ({ children, ...props }: any) => {
+  pre: ({ children }: any) => {
     const child = Array.isArray(children) ? (children[0] as ReactElement) : (children as ReactElement);
     const childProps = (child?.props ?? {}) as {
       className?: string;
       children?: string | string[] | ReactElement;
     };
     const className = childProps.className ?? '';
-    const match = /language-(\w+)/.exec(className);
-    const language = match && match[1];
+    const match = /language-([\w-]+)/.exec(className);
+    const language = match ? match[1] : undefined;
     const rawChildren = childProps.children;
     const codeContent =
       typeof rawChildren === 'string'
@@ -118,28 +117,10 @@ export const markdownComponents: Components = {
     }
 
     return (
-      <SyntaxHighlighter
-        language={language || 'text'}
-        style={oneLight}
-        customStyle={{
-          margin: '1rem 0',
-          padding: '1rem',
-          fontSize: '0.875rem',
-          lineHeight: '1.6',
-          background: 'transparent',
-          borderRadius: '8px',
-        }}
-        PreTag="pre"
-        codeTagProps={{
-          style: {
-            fontFamily:
-              'var(--font-geist-mono), "Fira Code", "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", Consolas, "Courier New", monospace',
-          },
-        }}
-        {...props}
-      >
-        {codeContent.replace(/\n$/, '')}
-      </SyntaxHighlighter>
+      <CodeBlock
+        language={language}
+        code={codeContent.replace(/\n$/, '')}
+      />
     );
   },
   code({ inline, className, children, ...props }: any) {

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 interface MermaidProps {
   chart: string;
@@ -8,6 +8,8 @@ interface MermaidProps {
 
 export default function Mermaid({ chart }: MermaidProps) {
   const ref = useRef<HTMLDivElement>(null);
+  const [svgHtml, setSvgHtml] = useState<string>('');
+  const [expanded, setExpanded] = useState(false);
 
   useEffect(() => {
     if (!ref.current) return;
@@ -157,11 +159,12 @@ export default function Mermaid({ chart }: MermaidProps) {
         const { svg } = await mermaid.render(id, chart);
         if (ref.current) {
           ref.current.innerHTML = svg;
+          setSvgHtml(svg);
         }
       } catch (error) {
         console.error('Mermaid rendering error:', error);
         if (ref.current) {
-          ref.current.innerHTML = `<pre class="text-red-600">Mermaid diagram rendering failed:\n${String(error)}</pre>`;
+          ref.current.innerHTML = `<pre class="text-red-400 text-xs overflow-x-auto">Mermaid diagram rendering failed:\n${String(error)}</pre>`;
         }
       }
     };
@@ -169,6 +172,79 @@ export default function Mermaid({ chart }: MermaidProps) {
     initializeMermaid();
   }, [chart]);
 
-  return <div ref={ref} className="mermaid my-6 flex justify-center" />;
+  useEffect(() => {
+    if (!expanded) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setExpanded(false);
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [expanded]);
+
+  return (
+    <>
+      <div className="mermaid-container my-6 rounded-[10px] overflow-hidden">
+        <div className="mermaid-header flex items-center justify-between px-3.5 py-2 text-xs">
+          <span className="font-mono tracking-wide opacity-80">mermaid</span>
+          {svgHtml && (
+            <button
+              type="button"
+              onClick={() => setExpanded(true)}
+              aria-label="図を拡大表示"
+              className="inline-flex items-center gap-1 px-2 py-0.5 rounded opacity-80 hover:opacity-100 hover:bg-white/10 transition-all cursor-pointer"
+            >
+              <svg
+                className="w-3.5 h-3.5"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <polyline points="15 3 21 3 21 9" />
+                <polyline points="9 21 3 21 3 15" />
+                <line x1="21" y1="3" x2="14" y2="10" />
+                <line x1="3" y1="21" x2="10" y2="14" />
+              </svg>
+              <span>拡大</span>
+            </button>
+          )}
+        </div>
+        <div ref={ref} className="mermaid" />
+      </div>
+
+      {expanded && svgHtml && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label="Mermaid 図の拡大表示"
+          className="fixed inset-0 z-[100] bg-black/80 backdrop-blur-sm flex items-center justify-center p-3 sm:p-6"
+          onClick={() => setExpanded(false)}
+        >
+          <div
+            className="relative w-full max-w-6xl max-h-[90vh] bg-[#0f172a] border border-slate-700/80 rounded-2xl overflow-hidden flex flex-col shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between px-4 py-2.5 border-b border-white/10 text-xs text-slate-300">
+              <span className="font-mono">mermaid</span>
+              <button
+                type="button"
+                onClick={() => setExpanded(false)}
+                className="px-2.5 py-1 rounded-md bg-white/10 hover:bg-white/20 text-slate-100 transition-colors cursor-pointer"
+              >
+                閉じる (Esc)
+              </button>
+            </div>
+            <div
+              className="mermaid mermaid-modal-body overflow-auto p-4 sm:p-8 flex-1"
+              dangerouslySetInnerHTML={{ __html: svgHtml }}
+            />
+          </div>
+        </div>
+      )}
+    </>
+  );
 }
 

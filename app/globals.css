@@ -17,6 +17,15 @@
   --primary-glow: rgba(50, 150, 255, 0.5);
   --hero-text: #f6f9ff;
   --ring-glow: rgba(125, 211, 252, 0.35);
+  --article-bg: rgba(13, 19, 33, 0.72);
+  --article-border: rgba(255, 255, 255, 0.09);
+  --article-heading: #f8fafc;
+  --article-text: #dbe4f0;
+  --article-muted: #94a3b8;
+  --article-code-bg: rgba(148, 163, 184, 0.16);
+  --article-code-text: #7dd3fc;
+  --article-quote-bg: rgba(148, 163, 184, 0.07);
+  --article-quote-border: #64748b;
   color-scheme: dark;
 }
 
@@ -36,6 +45,15 @@
   --primary-glow: rgba(14, 165, 233, 0.35);
   --hero-text: #06283d;
   --ring-glow: rgba(13, 148, 136, 0.25);
+  --article-bg: #ffffff;
+  --article-border: rgba(15, 23, 42, 0.1);
+  --article-heading: #0f172a;
+  --article-text: #1e293b;
+  --article-muted: #475569;
+  --article-code-bg: rgba(33, 90, 160, 0.08);
+  --article-code-text: #0f172a;
+  --article-quote-bg: rgba(241, 245, 249, 0.9);
+  --article-quote-border: #94a3b8;
   color-scheme: light;
 }
 
@@ -57,58 +75,126 @@ body {
   font-family: var(--font-noto-sans-jp), var(--font-inter), 'Hiragino Sans', 'Yu Gothic', 'Meiryo', sans-serif;
 }
 
-/* GitHub Alerts - Dark Glass Style */
+/* ============================================================
+   Zenn-inspired Article Surface & Table of Contents
+   ============================================================ */
+.article-surface {
+  background: transparent;
+  font-size: 16px;
+  line-height: 1.9;
+  letter-spacing: 0.01em;
+  overflow-wrap: break-word;
+}
+
+@media (min-width: 640px) {
+  .article-surface {
+    background: var(--article-bg);
+    border: 1px solid var(--article-border);
+    border-radius: 16px;
+    box-shadow: 0 4px 24px -4px rgba(0, 0, 0, 0.12);
+  }
+}
+
+.article-toc {
+  background: var(--article-bg);
+  border: 1px solid var(--article-border);
+  box-shadow: 0 4px 20px -4px rgba(0, 0, 0, 0.08);
+}
+
+/* ============================================================
+   GitHub Alerts — Zenn :::message style
+   ============================================================ */
 [class^='markdown-alert'] {
-  padding: 1.25rem;
+  padding: 1rem 1.25rem;
   margin: 1.5rem 0;
-  border-left: 4px solid;
-  border-radius: 12px;
-  background: rgba(30, 41, 59, 0.5);
-  backdrop-filter: blur(8px);
-  border: 1px solid var(--glass-border);
+  border-radius: 10px;
+  border: 1px solid var(--article-border);
   border-left-width: 4px;
+  background: rgba(30, 41, 59, 0.45);
+  color: var(--article-text);
+  font-size: 0.95rem;
+  line-height: 1.75;
+}
+
+[class^='markdown-alert'] .markdown-alert-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 700;
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+}
+
+[class^='markdown-alert'] > p:last-child {
+  margin-bottom: 0;
 }
 
 .markdown-alert-note {
   border-left-color: #3b82f6;
-  color: #e2e8f0;
+  background: rgba(59, 130, 246, 0.09);
 }
 
 .markdown-alert-tip {
   border-left-color: #22c55e;
-  color: #e2e8f0;
+  background: rgba(34, 197, 94, 0.09);
 }
 
 .markdown-alert-important {
   border-left-color: #a855f7;
-  color: #e2e8f0;
+  background: rgba(168, 85, 247, 0.09);
 }
 
 .markdown-alert-warning {
   border-left-color: #f59e0b;
-  color: #e2e8f0;
+  background: rgba(245, 158, 11, 0.1);
 }
 
 .markdown-alert-caution {
   border-left-color: #ef4444;
-  color: #e2e8f0;
+  background: rgba(239, 68, 68, 0.1);
 }
 
-/* Mermaid wrapper */
+/* ============================================================
+   Mermaid Container & Diagram — Zenn-style framed viewport
+   ============================================================ */
+.mermaid-container {
+  border: 1px solid var(--article-border);
+  background: rgba(15, 23, 42, 0.55);
+}
+
+.mermaid-header {
+  background: rgba(15, 23, 42, 0.65);
+  border-bottom: 1px solid var(--article-border);
+  color: var(--article-muted);
+}
+
 .mermaid {
   display: flex;
   justify-content: center;
-  margin: 2rem 0;
-  background: rgba(255, 255, 255, 0.02);
-  padding: 1.5rem;
-  border-radius: 12px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 0;
+  padding: 1.25rem 1rem;
+  background: transparent;
   /* Default text color for diagram elements that don't set their own color
      (e.g. classDef) */
   color: #f8fafc;
 }
 
+.mermaid svg {
+  max-width: 100%;
+  height: auto;
+}
+
+.mermaid-modal-body svg {
+  max-width: none;
+  width: auto;
+  height: auto;
+  margin: 0 auto;
+}
+
 /* Mermaid renders node/edge labels as nested <p>/<span>/<div> tags inside the
-   SVG's foreignObject. The "article" typography rules above match these same
+   SVG's foreignObject. The "article" typography rules below match these same
    tags and, being !important, were clobbering colors Mermaid sets explicitly
    via inline style for classDef'd nodes (e.g. dark text on a light pastel
    node background). Force these tags to inherit instead, so the color comes
@@ -123,15 +209,17 @@ body {
   color: inherit !important;
 }
 
-/* Markdown Typography Overrides for Dark Mode */
+/* ============================================================
+   Zenn-inspired Markdown Typography (Dark & Light via CSS vars)
+   ============================================================ */
 article strong,
 strong {
   font-weight: 700 !important;
-  color: #fff !important;
+  color: var(--article-heading) !important;
 }
 
 article em {
-  color: #e2e8f0 !important;
+  color: var(--article-text) !important;
   font-style: italic;
 }
 
@@ -141,44 +229,57 @@ article h3,
 article h4,
 article h5,
 article h6 {
-  color: #fff !important;
+  color: var(--article-heading) !important;
   font-weight: 700;
-  line-height: 1.3;
+  scroll-margin-top: 5.5rem;
 }
 
 article h1 {
-  font-size: 2.25rem;
+  font-size: 2rem;
+  line-height: 1.4;
+  margin-top: 0;
   margin-bottom: 1.5rem;
-  padding-bottom: 0.75rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid var(--article-border);
 }
 
 article h2 {
-  font-size: 1.75rem;
-  margin-top: 2.5rem;
-  margin-bottom: 1rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 1.55rem;
+  line-height: 1.45;
+  margin-top: 2.3em;
+  margin-bottom: 0.8em;
+  padding-bottom: 0.35em;
+  border-bottom: 1px solid var(--article-border);
 }
 
 article h3 {
-  font-size: 1.375rem;
-  margin-top: 2rem;
-  margin-bottom: 0.75rem;
+  font-size: 1.25rem;
+  line-height: 1.5;
+  margin-top: 2em;
+  margin-bottom: 0.55em;
+}
+
+article h4 {
+  font-size: 1.075rem;
+  line-height: 1.55;
+  margin-top: 1.75em;
+  margin-bottom: 0.45em;
 }
 
 article p {
-  color: #e2e8f0 !important; /* slate-200 - より明るく */
-  line-height: 1.8;
-  margin-bottom: 1rem;
+  color: var(--article-text) !important;
+  line-height: 1.9;
+  margin-top: 0;
+  margin-bottom: 1.25em;
 }
 
-/* リスト（ul, ol）のスタイル */
+/* リスト（ul, ol） */
 article ul,
 article ol {
-  color: #e2e8f0 !important;
-  margin: 1rem 0;
-  padding-left: 1.5rem;
+  color: var(--article-text) !important;
+  margin: 1.25em 0;
+  margin-left: 0 !important;
+  padding-left: 1.6em;
 }
 
 article ul {
@@ -190,52 +291,68 @@ article ol {
 }
 
 article li {
-  color: #e2e8f0 !important; /* slate-200 */
+  color: var(--article-text) !important;
   line-height: 1.8;
-  margin-bottom: 0.5rem;
+  margin: 0.4em 0;
 }
 
 article li::marker {
-  color: #60a5fa; /* blue-400 - マーカーにアクセントカラー */
+  color: var(--accent-soft);
 }
 
 article ul ul,
 article ol ol,
 article ul ol,
 article ol ul {
-  margin-top: 0.5rem;
-  margin-bottom: 0.5rem;
+  margin-top: 0.35em;
+  margin-bottom: 0.35em;
 }
 
 /* リンク */
 article a {
-  color: #60a5fa !important; /* blue-400 */
+  color: #60a5fa !important;
   text-decoration: none;
-  border-bottom: 1px solid rgba(96, 165, 250, 0.3);
-  transition: all 0.2s;
+  border-bottom: 1px solid rgba(96, 165, 250, 0.35);
+  transition: color 0.15s ease, border-color 0.15s ease;
 }
 
 article a:hover {
-  color: #93c5fd !important; /* blue-300 */
-  border-bottom-color: #60a5fa;
-  text-shadow: 0 0 8px rgba(96, 165, 250, 0.4);
+  color: #93c5fd !important;
+  border-bottom-color: #93c5fd;
 }
 
-/* インラインコード */
+/* インラインコード — Zenn style pill */
 article code {
-  background: rgba(255, 255, 255, 0.1) !important;
-  color: #f472b6 !important; /* pink-400 - コードを目立たせる */
-  padding: 0.2em 0.4em;
-  border-radius: 4px;
-  font-size: 0.9em;
+  background: var(--article-code-bg) !important;
+  color: var(--article-code-text) !important;
+  padding: 0.18em 0.45em;
+  border-radius: 5px;
+  font-size: 0.86em;
+  word-break: break-word;
+  font-family: var(--font-geist-mono), 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
 }
 
-/* コードブロック */
+/* Zenn-style Code Block overrides */
+.zenn-code-block pre,
+.zenn-code-block code {
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  padding: 0;
+  word-break: normal;
+}
+
+.zenn-code-block code {
+  color: inherit !important;
+  font-size: 0.86rem;
+}
+
+/* 通常のコードブロック（フォールバック） */
 article pre {
-  background: #0f172a !important; /* slate-900 */
-  border: 1px solid var(--glass-border);
-  border-radius: 8px;
-  padding: 1rem;
+  background: #1a2638 !important;
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  border-radius: 10px;
+  padding: 1rem 1.15rem;
   overflow-x: auto;
   margin: 1.5rem 0;
 }
@@ -244,71 +361,88 @@ article pre code {
   background: transparent !important;
   color: #e2e8f0 !important;
   padding: 0;
-  font-size: 0.875rem;
+  font-size: 0.86rem;
 }
 
-/* 引用（blockquote） */
+/* 引用（blockquote） — Zenn style (non-italic for Japanese readability) */
 article blockquote {
-  border-left: 4px solid #60a5fa;
-  background: rgba(96, 165, 250, 0.1);
-  padding: 1rem 1.5rem;
+  border-left: 3px solid var(--article-quote-border) !important;
+  background: var(--article-quote-bg);
+  padding: 0.85rem 1.15rem;
   margin: 1.5rem 0;
   border-radius: 0 8px 8px 0;
-  color: #cbd5e1 !important;
-  font-style: italic;
+  color: var(--article-muted) !important;
+  font-style: normal !important;
 }
 
 article blockquote p {
+  margin-bottom: 0.5rem;
+  color: var(--article-muted) !important;
+}
+
+article blockquote p:last-child {
   margin-bottom: 0;
-  color: #cbd5e1 !important;
 }
 
 /* 水平線 */
 article hr {
   border: none;
   height: 1px;
-  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.2), transparent);
-  margin: 2.5rem 0;
+  background: var(--article-border);
+  margin: 2.25rem 0;
 }
 
-/* テーブル */
+/* テーブル — Zenn clean bordered table */
+.zenn-table-wrapper {
+  border: 1px solid var(--article-border);
+  border-radius: 8px;
+  -webkit-overflow-scrolling: touch;
+}
+
 article table {
   width: 100%;
   border-collapse: collapse;
-  margin: 1.5rem 0;
-  font-size: 0.95rem;
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.6;
 }
 
 article th {
-  background: rgba(255, 255, 255, 0.1);
-  color: #fff !important;
+  background: rgba(148, 163, 184, 0.12);
+  color: var(--article-heading) !important;
   font-weight: 600;
-  padding: 0.75rem 1rem;
+  padding: 0.65rem 0.9rem;
   text-align: left;
-  border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+  border-bottom: 1px solid var(--article-border);
+  white-space: nowrap;
 }
 
 article td {
-  color: #e2e8f0 !important;
-  padding: 0.75rem 1rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--article-text) !important;
+  padding: 0.65rem 0.9rem;
+  border-bottom: 1px solid var(--article-border);
+}
+
+article tbody tr:last-child td {
+  border-bottom: none;
 }
 
 article tr:hover td {
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(148, 163, 184, 0.05);
 }
 
 /* 画像 */
 article img {
+  display: block;
   max-width: 100%;
   height: auto;
   border-radius: 8px;
-  margin: 1.5rem 0;
+  margin: 1.5rem auto;
 }
 
 /* チェックボックス（タスクリスト） */
 article input[type="checkbox"] {
-  accent-color: #60a5fa;
+  accent-color: var(--accent);
   width: 1rem;
   height: 1rem;
   margin-right: 0.5rem;
@@ -316,22 +450,51 @@ article input[type="checkbox"] {
 
 /* 定義リスト */
 article dl {
-  margin: 1rem 0;
+  margin: 1.25rem 0;
 }
 
 article dt {
-  color: #fff !important;
+  color: var(--article-heading) !important;
   font-weight: 600;
   margin-top: 1rem;
 }
 
 article dd {
-  color: #e2e8f0 !important;
-  margin-left: 1.5rem;
+  color: var(--article-text) !important;
+  margin-left: 1.25rem;
   margin-top: 0.25rem;
 }
 
+/* ============================================================
+   Mobile Typography & Spacing Refinements (< 640px)
+   ============================================================ */
 @media (max-width: 639px) {
+  .article-surface {
+    font-size: 15px;
+    line-height: 1.85;
+  }
+
+  article h1 {
+    font-size: 1.55rem;
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.5rem;
+  }
+
+  article h2 {
+    font-size: 1.3rem;
+    margin-top: 2em;
+    margin-bottom: 0.7em;
+  }
+
+  article h3 {
+    font-size: 1.125rem;
+    margin-top: 1.75em;
+  }
+
+  article h4 {
+    font-size: 1.025rem;
+  }
+
   article blockquote {
     padding: 0.75rem 1rem;
   }
@@ -341,117 +504,88 @@ article dd {
   }
 
   .mermaid {
-    padding: 0.75rem;
+    padding: 0.85rem 0.65rem;
+  }
+
+  .zenn-code-body > div {
+    padding: 0.85rem 0.9rem !important;
+    font-size: 0.8125rem !important;
   }
 
   article pre {
-    padding: 0.75rem;
+    padding: 0.85rem 0.9rem;
   }
 
   article ul,
   article ol {
-    padding-left: 1.25rem;
+    padding-left: 1.35em;
   }
 
   article th,
   article td {
-    padding: 0.5rem 0.75rem;
+    padding: 0.55rem 0.7rem;
+    font-size: 0.875rem;
   }
 }
 
 /* ============================================================
    Light theme overrides for markdown articles (docs pages)
    ============================================================ */
-:root[data-theme='light'] article strong,
-:root[data-theme='light'] strong {
-  color: #0b1b2b !important;
+:root[data-theme='light'] article a {
+  color: #0369a1 !important;
+  border-bottom-color: rgba(3, 105, 161, 0.35);
 }
 
-:root[data-theme='light'] article em {
-  color: #1e293b !important;
-}
-
-:root[data-theme='light'] article h1,
-:root[data-theme='light'] article h2,
-:root[data-theme='light'] article h3,
-:root[data-theme='light'] article h4,
-:root[data-theme='light'] article h5,
-:root[data-theme='light'] article h6 {
-  color: #0b1b2b !important;
-}
-
-:root[data-theme='light'] article h1,
-:root[data-theme='light'] article h2 {
-  border-bottom-color: rgba(11, 27, 43, 0.12);
-}
-
-:root[data-theme='light'] article p,
-:root[data-theme='light'] article ul,
-:root[data-theme='light'] article ol,
-:root[data-theme='light'] article li,
-:root[data-theme='light'] article dd {
-  color: #24344a !important;
+:root[data-theme='light'] article a:hover {
+  color: #0284c7 !important;
+  border-bottom-color: #0284c7;
 }
 
 :root[data-theme='light'] article li::marker {
   color: #0d9488;
 }
 
-:root[data-theme='light'] article a {
-  color: #0369a1 !important;
-  border-bottom-color: rgba(3, 105, 161, 0.3);
-}
-
-:root[data-theme='light'] article a:hover {
-  color: #0284c7 !important;
-  text-shadow: none;
-}
-
-:root[data-theme='light'] article code {
-  background: rgba(11, 27, 43, 0.07) !important;
-  color: #be185d !important;
-}
-
-:root[data-theme='light'] article pre {
-  background: #0f172a !important;
-}
-
-:root[data-theme='light'] article blockquote,
-:root[data-theme='light'] article blockquote p {
-  color: #3c4f66 !important;
-}
-
 :root[data-theme='light'] article th {
-  background: rgba(11, 27, 43, 0.06);
-  color: #0b1b2b !important;
-  border-bottom-color: rgba(11, 27, 43, 0.2);
+  background: rgba(15, 23, 42, 0.04);
 }
 
-:root[data-theme='light'] article td {
-  color: #24344a !important;
-  border-bottom-color: rgba(11, 27, 43, 0.08);
-}
-
-:root[data-theme='light'] article dt {
-  color: #0b1b2b !important;
+:root[data-theme='light'] article tr:hover td {
+  background: rgba(15, 23, 42, 0.025);
 }
 
 :root[data-theme='light'] [class^='markdown-alert'] {
-  background: rgba(255, 255, 255, 0.7);
-  color: #24344a;
+  color: var(--article-text);
 }
 
-:root[data-theme='light'] .markdown-alert-note,
-:root[data-theme='light'] .markdown-alert-tip,
-:root[data-theme='light'] .markdown-alert-important,
-:root[data-theme='light'] .markdown-alert-warning,
+:root[data-theme='light'] .markdown-alert-note {
+  background: rgba(59, 130, 246, 0.07);
+}
+
+:root[data-theme='light'] .markdown-alert-tip {
+  background: rgba(34, 197, 94, 0.07);
+}
+
+:root[data-theme='light'] .markdown-alert-important {
+  background: rgba(168, 85, 247, 0.07);
+}
+
+:root[data-theme='light'] .markdown-alert-warning {
+  background: rgba(245, 158, 11, 0.08);
+}
+
 :root[data-theme='light'] .markdown-alert-caution {
-  color: #24344a;
+  background: rgba(239, 68, 68, 0.07);
 }
 
-:root[data-theme='light'] .mermaid {
-  background: rgba(11, 27, 43, 0.03);
-  color: #0f172a;
+:root[data-theme='light'] .mermaid-container {
+  background: #0f172a;
+  border-color: rgba(15, 23, 42, 0.14);
+}
+
+:root[data-theme='light'] .mermaid-header {
+  background: #131d2c;
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+  color: #94a3b8;
 }
 
 /* Glassmorphism Utilities */
