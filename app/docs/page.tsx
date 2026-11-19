@@ -25,13 +25,13 @@ export default async function DocsIndex() {
 
   return (
     <main className="min-h-screen" style={{ background: '#e0e5ec' }}>
-      <div className="max-w-5xl mx-auto px-6 py-12">
+      <div className="max-w-5xl mx-auto px-3 sm:px-6 py-6 sm:py-12">
         <h1 className="text-4xl font-bold mb-8" style={{ color: '#2c3e50' }}>ドキュメント一覧</h1>
         <div className="grid gap-6">
           {Object.entries(groupedItems)
             .sort(([a], [b]) => a.localeCompare(b, 'ja'))
             .map(([dir, slugs]) => (
-              <section key={dir} className="neu-card p-6">
+              <section key={dir} className="neu-card p-4 sm:p-6">
                 <h2 className="text-2xl font-bold mb-4 pb-3" style={{ 
                   color: '#2c3e50',
                   borderBottom: '2px solid rgba(163, 177, 198, 0.3)'
