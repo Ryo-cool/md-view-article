@@ -8,3 +8,4 @@ export const Prism = ({ children, ...props }: any) => {
 };
 
 export const oneLight = {};
+export const oneDark = {};

@@ -206,14 +206,14 @@ export default async function DocPage({
   // });
 
   return (
-    <main className="min-h-screen bg-[#050510]">
-      <div className="max-w-7xl mx-auto px-2 sm:px-6 py-4 sm:py-12">
-        <div className="flex flex-col lg:flex-row gap-8">
-          <article className="glass-card px-4 py-6 sm:p-8 md:p-12 flex-1 min-w-0">
+    <main className="min-h-screen bg-background">
+      <div className="max-w-[1120px] mx-auto px-0 sm:px-6 py-2 sm:py-10">
+        <div className="flex flex-col lg:flex-row items-start gap-8">
+          <article className="article-surface w-full flex-1 min-w-0 px-5 py-6 sm:px-8 sm:py-10 md:px-12 md:py-12">
             <MarkdownRenderer content={processedContent} imageMap={imageMapObject} />
           </article>
-          
-          <aside className="hidden lg:block w-80 shrink-0">
+
+          <aside className="hidden lg:block w-72 shrink-0">
             <TableOfContents content={content} />
           </aside>
         </div>
