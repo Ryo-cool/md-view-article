@@ -231,9 +231,12 @@ export default async function DocPage({
                 <span>ドキュメント一覧</span>
               </Link>
               {category && (
-                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-[var(--article-pill-bg)] text-[var(--article-muted)] border border-[var(--article-border)]">
+                <Link
+                  href={`/docs?category=${encodeURIComponent(category)}`}
+                  className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-[var(--article-pill-bg)] text-[var(--article-muted)] border border-[var(--article-border)] hover:border-[var(--accent)] hover:text-foreground transition-colors"
+                >
                   {category}
-                </span>
+                </Link>
               )}
             </div>
 
